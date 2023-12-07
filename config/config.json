@@ -1,0 +1,16 @@
+{
+    "development": {
+        "host": "localhost",
+        "database": "caffe",
+        "username": "root",
+        "password": "krill!23",
+        "dialect": "mysql"
+    },
+    "production": {
+        "host": "",
+        "database": "",
+        "username": "",
+        "password": "",
+        "dialect": ""
+    }
+}
