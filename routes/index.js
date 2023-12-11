@@ -1,8 +1,10 @@
-const express=require("express");
+const express = require("express");
 const router = express.Router();
-const home = require("../controller/Chome");
+const crew = require("../controller/Ccrew");
 
 // 홈페이지
-router.get("/", home.homePage);
+router.get("/", crew.homePage);
+router.get("/signup", crew.signUpPage);
+router.get("/login", crew.loginPage);
 
 module.exports=router;
