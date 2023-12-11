@@ -3,7 +3,7 @@ function Crew(sequelize, DataTypes) {
       "crew",
       {
         // ID 설정
-        id: {
+        crewId: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -16,7 +16,7 @@ function Crew(sequelize, DataTypes) {
         },
         // 닉네임 설정
         nickname: {
-          type: DataTypes.STRING(255),
+          type: DataTypes.STRING(50),
           allowNull: false,
         },
         // 비밀번호 설정

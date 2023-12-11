@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const crew = require("../controller/Ccrew");
+const home = require("../controller/CHome");
 
 // 홈페이지
-router.get("/", crew.homePage);
-router.get("/signup", crew.signUpPage);
-router.get("/login", crew.loginPage);
+router.get("/", home.homePage);
+router.get("/signup", home.signUpPage);
+router.get("/login", home.loginPage);
 
 module.exports=router;
