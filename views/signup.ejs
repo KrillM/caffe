@@ -38,13 +38,13 @@
             </div>
         </div>
         
-        <div id="emailMessage" style="color: red;"></div>
+        <div id="message" style="color: red;"></div>
         <button type="button" class="btn btn-primary" onClick="createUser()">Sign Up</button>
     </form>
     <%- include('fragments/footer') %>
 
     <script>
-        const err = document.getElementById("emailMessage");
+        const err = document.getElementById("message");
       
         const createUser = async () => {
             const email = document.getElementById("email").value;
