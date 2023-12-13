@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const { Crew } = require("../model");
+const multer = require("multer");
 
 exports.homePage = (req, res) => {
     res.render("index");
@@ -42,7 +43,7 @@ exports.signUpProcess = async (req, res) => {
             nickname,
             phoneNumber,
         }).then(() => {
-            res.send("ok");
+                res.send("ok");
             })
             .catch((err) => {
                 console.error(err);

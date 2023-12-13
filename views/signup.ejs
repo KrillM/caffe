@@ -6,7 +6,7 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
-    <form class="crewForm" action="/signup" method="post" onsubmit="return createUser();">
+    <form class="crewForm" name="signUpCrew" action="/signup" method="post" enctype="multipart/form-data" onsubmit="return createUser();">
         <div class="row mb-3">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
@@ -35,6 +35,12 @@
             <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
             <div class="col-sm-10">
                 <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" />
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="profileImage" class="col-sm-2 col-form-label">Profile Image</label>
+            <div class="col-sm-10">
+                <input type="file" name="profileImage" class="form-control" id="profileImage" />
             </div>
         </div>
         
@@ -81,14 +87,13 @@
                 return (err.innerHTML = '전화번호는 숫자만 입력하고, -를 사용하지 않아야 합니다.');
             }
         
-            // 모든 유효성 검사가 통과되면 Axios를 사용하여 서버로 데이터 전송
             const user = {
                 email,
                 nickname,
                 password,
                 phoneNumber,
             };
-        
+
             try {
                 const response = await axios.post('/signup', user);
         

@@ -18,7 +18,6 @@ app.use(session({
 const router = require("./routes");
 app.use("/", router);
 
-
 app.get("*", (req, res) => {
     res.send("404 Error");
 });
