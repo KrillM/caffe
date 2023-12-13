@@ -3,7 +3,23 @@ const { Crew } = require("../model");
 const multer = require("multer");
 
 exports.homePage = (req, res) => {
-    res.render("index");
+    if(req.session.user){
+        Crew.findOne({
+            where:{
+                email: req.session.user
+            }
+        }).then((result) => {
+            console.log("조회", result);
+            if(result){
+                res.render("index", { user: result });
+            }
+        }).catch((err) => {
+            console.log(err)
+            res.status(500).send("접근 오류 발생")
+        })
+    } else {
+        res.render("index");
+    }
 }
 
 exports.loginPage = (req, res) => {
