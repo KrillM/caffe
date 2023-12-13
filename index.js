@@ -12,6 +12,10 @@ app.use(session({
     secret: 'secret key',
     resave: false,
     saveUninitialized: true,
+    cookie: {
+        httpOnly: true, // document.cookie로는 접속x
+        maxAge: 1000 * 60 * 60,
+    },
 }))
 
 // 예시: 미들웨어로 isLoggedIn 전역 변수 설정
