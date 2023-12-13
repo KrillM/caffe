@@ -66,7 +66,7 @@ exports.loginProcess = (req, res) => {
                 console.log("로그인 성공");
                 req.session.user = email;
                 res.send(email);
-            } else if (!compare) {
+            } else {
                 res.status(400).send("비밀번호가 틀렸습니다.");
             }
         } else {

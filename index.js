@@ -14,6 +14,12 @@ app.use(session({
     saveUninitialized: true,
 }))
 
+// 예시: 미들웨어로 isLoggedIn 전역 변수 설정
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = req.session.user ? true : false;
+    next();
+});
+
 // 라우터 연결
 const router = require("./routes");
 app.use("/", router);

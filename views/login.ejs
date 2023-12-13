@@ -44,7 +44,7 @@
             try {
                 const response = await axios.post('/login', user);
         
-                if (response.data === 'ok') {
+                if (response.data === email) {
                     err.innerHTML = '로그인 성공';
                     setTimeout(() => {
                         err.innerHTML = '';
