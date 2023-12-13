@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // 라우터 연결
-const router = require("./routes");
+const router = require("./routes/crew");
 app.use("/", router);
 
 app.get("*", (req, res) => {

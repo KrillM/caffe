@@ -50,7 +50,6 @@ exports.signUpProcess = async (req, res) => {
             return res.status(400).send("이미 등록된 전화번호입니다.");
         }
     
-        // 가입 처리
         const hashPassword = this.hashPassword(password);
     
         Crew.create({
