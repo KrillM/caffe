@@ -31,9 +31,18 @@
                 <input type="file" name="profileImage" class="form-control" id="profileImage" />
             </div>
         </div>
-        
-        <div id="message" style="color: red;"></div>
-        <button type="button" class="btn btn-primary" onClick="updateUser()">Update</button>
+        <div class="row mb-3">
+            <label for="message" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div id="message" style="color: red;"></div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="button" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-primary" onClick="updateUser()">Update</button>
+            </div>
+        </div>
         <!-- <button type="button" class="btn btn-primary" onClick="deleteUser()">Delete</button> -->
     </form>
     <%- include('fragments/footer') %>
