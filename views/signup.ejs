@@ -43,8 +43,12 @@
                 <input type="file" name="profileImage" class="form-control" id="profileImage" placeholder="사용할 프로필 이미지를 골라주세요"/>
             </div>
         </div>
-        
-        <div id="message" style="color: red;"></div>
+        <div class="row mb-3">
+            <label for="message" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div id="message" style="color: red;"></div>
+            </div>
+        </div>
         <button type="button" class="btn btn-primary" onClick="createUser()">Sign Up</button>
     </form>
     <%- include('fragments/footer') %>
