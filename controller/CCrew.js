@@ -70,6 +70,26 @@ exports.signUpProcess = async (req, res) => {
         }
 };
 
+exports.profilePage = (req, res) => {
+    if(req.session.user){
+        Crew.findOne({
+            where:{
+                email: req.session.user
+            }
+        }).then((result) => {
+            console.log("조회", result);
+            if(result){
+                res.render("myInfo", { user: result });
+            }
+        }).catch((err) => {
+            console.log(err)
+            res.status(500).send("접근 오류 발생")
+        })
+    } else {
+        res.render("index");
+    }
+}
+
 exports.loginProcess = (req, res) => {
     const { email, password } = req.body;
 

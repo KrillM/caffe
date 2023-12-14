@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('fragments/header') %>
+    <title>개인 프로필 페이지</title>
+</head>
+<body>
+    <%- include('fragments/navbar') %>
+    <form class="crewForm" name="signUpCrew" action="/myinfo/<%= user.nickname %>/update" method="patch" enctype="multipart/form-data" onsubmit="return createUser();">
+        <div class="row mb-3">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" name="email" class="form-control" id="email" value="<%= user.email %>" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="nickname" class="col-sm-2 col-form-label">Nickname</label>
+            <div class="col-sm-10">
+                <input type="text" name="nickname" class="form-control" id="nickname" value="<%= user.nickname %>">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= user.phoneNumber %>"/>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="profileImage" class="col-sm-2 col-form-label">Profile Image</label>
+            <div class="col-sm-10">
+                <input type="file" name="profileImage" class="form-control" id="profileImage" />
+            </div>
+        </div>
+        
+        <div id="message" style="color: red;"></div>
+        <button type="button" class="btn btn-primary" onClick="updateUser()">Update</button>
+        <!-- <button type="button" class="btn btn-primary" onClick="deleteUser()">Delete</button> -->
+    </form>
+    <%- include('fragments/footer') %>
+    <%- include('fragments/footerJs') %>
+
+    <script>
+        const err = document.getElementById("message");
+      
+        const updateUser = async () => {
+            const email = document.getElementById("email").value;
+            const nickname = document.getElementById("nickname").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
+        
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                return (err.innerHTML = "이메일 형식을 확인해주세요.");
+            }
+                    
+            if (nickname.length < 2 || nickname.length > 20) {
+                return (err.innerHTML = '닉네임은 두 글자 이상 20글자 이하여야 합니다.');
+            }
+        
+            const phoneNumberRegex = /^\d+$/;
+            if (!phoneNumberRegex.test(phoneNumber) || phoneNumber.includes('-')) {
+                return (err.innerHTML = '전화번호는 숫자만 입력하고, -를 사용하지 않아야 합니다.');
+            }
+        
+            const user = {
+                email,
+                nickname,
+                phoneNumber,
+            };
+
+            try {
+                const response = await axios.patch(`/myinfo/${user.nickname}/update`, user);
+        
+                if (response.data === true) {
+                    err.innerHTML = '수정이 완료되었습니다.';
+                    setTimeout(() => {
+                        err.innerHTML = '';
+                        document.location.href = '/';
+                    }, 2000);
+                }
+            } catch (error) {
+                    console.error('Error:', error);
+                    err.innerHTML = error.response.data;
+                    setTimeout(() => {
+                    err.innerHTML = '';
+                }, 2000);
+            }
+        };
+    </script>
+</body>
+</html>
