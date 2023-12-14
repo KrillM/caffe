@@ -13,12 +13,17 @@ exports.homePage = (req, res) => {
             if(result){
                 res.render("index", { user: result });
             }
+            else{
+                req.session.destroy((err) => {
+                    res.render("index", { user: null });
+                })
+            }
         }).catch((err) => {
             console.log(err)
             res.status(500).send("접근 오류 발생")
         })
     } else {
-        res.render("index");
+        res.render("index", { user: null });
     }
 }
 
@@ -119,6 +124,20 @@ exports.logoutProcess = (req, res) => {
     else{
         res.send({ result: false })
     }
+}
+
+exports.profileDelete = (req, res) => {
+    Crew.destroy({
+        where:{
+            email: req.session.user,
+        }
+    }).then((result) => {
+        console.log("삭제 ",result);
+        res.send({ result:true })
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send();
+    })
 }
 
 exports.hashPassword = (password) => {

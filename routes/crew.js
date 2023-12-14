@@ -12,5 +12,6 @@ router.delete("/logout", crew.logoutProcess);
 
 router.get("/myinfo/:nickname", crew.profilePage);
 router.post("/myinfo/:nickname", crew.profilePage);
+router.delete("/myinfo/delete", crew.profileDelete);
 
 module.exports=router;

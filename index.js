@@ -21,6 +21,7 @@ app.use(session({
 // 예시: 미들웨어로 isLoggedIn 전역 변수 설정
 app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.user ? true : false;
+    res.locals.user = req.session.user || null; // 로그인된 사용자 정보 설정
     next();
 });
 
