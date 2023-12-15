@@ -65,6 +65,44 @@ exports.profilePage = (req, res) => {
     }
 }
 
+exports.updateProfile = async (req, res) => {
+    const { email, nickname, phoneNumber } = req.body;
+
+    try {
+        const emailExists = await Crew.findOne({ where: { email } });
+        const nicknameExists = await Crew.findOne({ where: { nickname } });
+        const phoneNumberExists = await Crew.findOne({ where: { phoneNumber } });
+
+        if (emailExists && emailExists.email !== req.session.user) {
+            return res.status(400).send("이미 가입된 이메일입니다.");
+        }
+
+        if (nicknameExists && nicknameExists.email !== req.session.user) {
+            return res.status(400).send("이미 사용 중인 닉네임입니다.");
+        }
+
+        if (phoneNumberExists && phoneNumberExists.email !== req.session.user) {
+            return res.status(400).send("이미 등록된 전화번호입니다.");
+        }
+
+        // 수정된 Crew.update 호출, 'where' 절을 포함
+        await Crew.update({
+                email,  // 업데이트하려는 필드를 포함합니다
+                nickname,
+                phoneNumber,
+            },{
+                where: {
+                    email: req.session.user,
+                },
+            }
+        );
+        res.send("ok");
+    } catch (error) {
+        console.error("updateProfile 중 오류 발생:", error);
+        res.status(500).send("수정 오류가 발생하였습니다.");
+    }
+};
+
 exports.profileDelete = (req, res) => {
     Crew.destroy({
         where:{
