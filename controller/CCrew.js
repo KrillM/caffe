@@ -103,6 +103,26 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
+exports.updatePassword = async (req, res) => {
+    const { password } = req.body;
+    const hashPassword = this.hashPassword(password);
+
+    try {
+        await Crew.update({
+                password: hashPassword
+            },{
+                where: {
+                    email: req.session.user,
+                },
+            }
+        );
+        res.send("ok");
+    } catch (error) {
+        console.error("updatePassword 중 오류 발생:", error);
+        res.status(500).send("수정 오류가 발생하였습니다.");
+    }
+};
+
 exports.profileDelete = (req, res) => {
     Crew.destroy({
         where:{

@@ -13,7 +13,8 @@ router.delete("/logout", login.logoutProcess);
 
 router.get("/myinfo/:nickname", crew.profilePage);
 router.post("/myinfo/:nickname", crew.profilePage);
-router.patch("/myinfo/update", crew.updateProfile);
+router.patch("/myinfo/update/profile", crew.updateProfile);
+router.patch("/myinfo/update/password", crew.updatePassword);
 router.delete("/myinfo/delete", crew.profileDelete);
 
 module.exports=router;
