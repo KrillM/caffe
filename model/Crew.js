@@ -30,7 +30,7 @@ function Crew(sequelize, DataTypes) {
       },
       // 프로필 이미지 설정
       profileImage: {
-        type: DataTypes.TEXT('long'), // 또는 DataTypes.TEXT('long')로 변경
+        type: DataTypes.BLOB, // 또는 DataTypes.TEXT('long')로 변경
       },
     },
     {

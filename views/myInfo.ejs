@@ -6,7 +6,7 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
-    <form class="crewForm" name="signUpCrew" action="/myinfo/update/profile" method="patch" enctype="multipart/form-data" onsubmit="return updateUser();">
+    <form class="crewForm" name="updateCrew" action="/myinfo/update/profile" method="patch" enctype="multipart/form-data">
         <div class="row mb-3">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
@@ -46,7 +46,7 @@
         </div>
     </form>
 
-    <form class="crewForm" name="signUpCrew" action="/myinfo/update/password" method="patch" onsubmit="return updatePassword();">
+    <form class="crewForm" name="updatePassword" action="/myinfo/update/password" method="patch">
         <div class="row mb-3">
             <label for="password" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
@@ -68,12 +68,12 @@
         <div class="row mb-3">
             <label for="button" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
-                <button type="button" class="btn btn-warning" onClick="updatePassword()">Update Password</button>
+                <button type="button" class="btn btn-warning" onClick="update2NewPassword()">Update Password</button>
             </div>
         </div>
     </form>
 
-    <form class="crewForm" name="signUpCrew" method="patch" enctype="multipart/form-data" onsubmit="return updateUser();">
+    <form class="crewForm" name="buttons">
         <div class="row mb-3">
             <label for="button" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
@@ -87,7 +87,6 @@
 
     <script>
         const err = document.getElementById("message");
-        const err2 = document.getElementById("message2");
       
         const updateUser = async () => {
             const email = document.getElementById("email").value;
@@ -109,14 +108,15 @@
                 return (err.innerHTML = '전화번호는 숫자만 입력하고, -를 사용하지 않아야 합니다.');
             }
         
-            const user = {
-                email,
-                nickname,
-                phoneNumber,
-            };
+            const form = document.forms["updateCrew"];
+            const formData = new FormData();
+            formData.append("email", form.email.value);
+            formData.append("nickname", form.nickname.value);
+            formData.append("phoneNumber", form.phoneNumber.value);
+            formData.append("profileImage", form.profileImage.files[0]);
 
             try {
-                const response = await axios.patch(`/myinfo/update/profile`, user);
+                const response = await axios.patch(`/myinfo/update/profile`, formData);
         
                 if (response.data === "ok") {
                     err.innerHTML = '프로필이 수정 되었습니다.';
@@ -126,15 +126,17 @@
                     }, 2000);
                 }
             } catch (error) {
-                    console.error('Error:', error);
-                    err.innerHTML = error.response.data;
-                    setTimeout(() => {
+                console.error('Error:', error);
+                err.innerHTML = error.response.data;
+                setTimeout(() => {
                     err.innerHTML = '';
                 }, 2000);
             }
         };
 
-        const updatePassword = async () => {
+        const err2 = document.getElementById("message2");
+
+        const update2NewPassword = async () => {
             const password = document.getElementById("password").value;
             const passwordConfirm = document.getElementById("passwordConfirm").value;
 
@@ -162,9 +164,9 @@
                     }, 2000);
                 }
             } catch (error) {
-                    console.error('Error:', error);
-                    err2.innerHTML = error.response.data;
-                    setTimeout(() => {
+                console.error('Error:', error);
+                err2.innerHTML = error.response.data;
+                setTimeout(() => {
                     err2.innerHTML = '';
                 }, 2000);
             }

@@ -1,5 +1,7 @@
-const session = require('express-session')
+const session = require('express-session');
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
 const app = express();
 const port = 8000;
 
@@ -7,6 +9,25 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(__dirname + "/static"));
+app.use("/files", express.static(__dirname + "/files"))
+
+const uploadFiles = multer({
+    storage: multer.diskStorage({
+        destination: function(req, file, done){
+            done(null, "files/");
+        },
+        filename: function(req, file, done){
+            console.log(file)
+            const ext = path.extname(file.originalname); 
+            const basename = path.basename(file.originalname, ext); 
+            const fileName = req.body.profileImage + "_" + basename + "_" + Date.now()+ext;
+            done(null, fileName);
+        }
+    }),
+    limits: {fileSize: 5*1024*1024}
+})
+
+module.exports = uploadFiles;
 
 app.use(session({
     secret: 'secret key',
@@ -25,7 +46,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// 라우터 연결
 const router = require("./routes/crew");
 app.use("/", router);
 
