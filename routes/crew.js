@@ -15,6 +15,7 @@ router.get("/myinfo/:nickname", crew.profilePage);
 router.post("/myinfo/:nickname", crew.profilePage);
 router.patch("/myinfo/update/profile", crew.updateProfile);
 router.patch("/myinfo/update/password", crew.updatePassword);
+router.patch("/myinfo/update/image", crew.updateImage);
 router.delete("/myinfo/delete", crew.profileDelete);
 
 module.exports=router;

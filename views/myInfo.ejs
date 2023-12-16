@@ -6,6 +6,28 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
+    <form class="crewForm" name="updateNewImage" action="/myinfo/update/image" method="patch" enctype="multipart/form-data">
+        <div class="mb-3 row">
+            <label for="profileImage" class="col-sm-2 col-form-label">New Profile Image</label>
+            <div class="col-sm-10">
+                <input type="file" name="profileImage" class="form-control" id="profileImage"/>
+                <div id="warning" style="color: darkgoldenrod;">선택된 파일이 없을 때 클릭하는 경우 프로필 이미지가 자동 사라집니다.</div>
+            </div>
+            <div class="row mb-3">
+                <label for="message" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div id="message3" style="color: red;"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="button" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <button type="button" class="btn btn-warning" onClick="update4NewImage()">Update Image</button>  
+                </div>
+            </div>
+        </div>
+    </form>
+
     <form class="crewForm" name="updateCrew" action="/myinfo/update/profile" method="patch">
         <div class="row mb-3">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
@@ -80,6 +102,32 @@
     <%- include('fragments/footerJs') %>
 
     <script>
+        const err3 = document.getElementById("message3");
+
+        const update4NewImage = async () => {
+            const form = document.forms["updateNewImage"];
+            const formData = new FormData();
+            formData.append("profileImage", form.profileImage.files[0]);
+
+            try {
+                const response = await axios.patch('/myinfo/update/image', formData);
+        
+                if (response.data === 'ok') {
+                    err3.innerHTML = '프로필 이미지가 수정 되었습니다.';
+                    setTimeout(() => {
+                        err3.innerHTML = '';
+                        document.location.href = '/';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                err3.innerHTML = error.response.data;
+                setTimeout(() => {
+                    err3.innerHTML = '';
+                }, 2000);
+            }
+        }
+
         const err = document.getElementById("message");
       
         const updateUser = async () => {

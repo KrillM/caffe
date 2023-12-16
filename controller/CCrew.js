@@ -12,7 +12,7 @@ const uploadFiles = multer({
             console.log(file)
             const ext = path.extname(file.originalname); 
             const basename = path.basename(file.originalname, ext); 
-            const fileName = req.body.nickname + "_" + basename + "_" + Date.now() + ext;
+            const fileName = basename + "_" + Date.now() + ext;
             console.log(req.body);
             done(null, fileName);
         }
@@ -151,6 +151,32 @@ exports.updatePassword = async (req, res) => {
         res.status(500).send("수정 오류가 발생하였습니다.");
     }
 };
+
+exports.updateImage = async (req, res, next) => {
+    try {
+        await uploadFiles.single("profileImage")(req, res, async function (err) {
+            if (err) {
+                console.error("이미지 업로드 중 오류 발생:", err);
+                return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
+            }
+
+            const updateProfileImage = req.file ? req.file.filename : null;
+
+            await Crew.update({
+                profileImage: updateProfileImage
+            },{
+                where: {
+                    email: req.session.user,
+                },
+            }
+        );
+            res.send("ok");
+        });
+    } catch (error) {
+        console.error("프로필 이미지 수정 중 오류 발생:", error);
+        res.status(500).send("프로필 이미지 수정 중 오류가 발생하였습니다.");
+    }
+}
 
 exports.profileDelete = (req, res) => {
     Crew.destroy({
