@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('fragments/header') %>
+    <title>마이 페이지</title>
+</head>
+<body>
+    <%- include('fragments/navbar') %>
+    <div class="crewForm">
+        <div class="card" style="width: 18rem;">
+            <% if(user.profileImage !== null) { %>
+                <img class="card-img-top" src="../files/<%= user.profileImage %>" alt="Card image cap">
+            <% } else { %>
+                <svg data-jdenticon-value="<%= user.nickname %>"></svg>
+            <% } %>
+            <div class="card-body">
+                <h5 class="card-title"><%= user.nickname %></h5>
+                <p class="card-text">My Page</p>
+            </div>
+        </div>
+    </div>
+    <%- include('fragments/footerJs') %>
+</body>

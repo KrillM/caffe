@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const login = require("../controller/CLogin")
 const crew = require("../controller/CCrew")
+const crewpage = require("../controller/CPage")
 
 router.get("/", login.homePage);
 router.get("/signup", crew.signUpPage);
@@ -11,11 +12,6 @@ router.get("/login", login.loginPage);
 router.post("/login", login.loginProcess);
 router.delete("/logout", login.logoutProcess);
 
-router.get("/myinfo/:nickname", crew.profilePage);
-router.post("/myinfo/:nickname", crew.profilePage);
-router.patch("/myinfo/update/profile", crew.updateProfile);
-router.patch("/myinfo/update/password", crew.updatePassword);
-router.patch("/myinfo/update/image", crew.updateImage);
-router.delete("/myinfo/delete", crew.profileDelete);
+router.get("/crewpage/:nickname", crewpage.crewPage);
 
 module.exports=router;

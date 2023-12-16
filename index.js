@@ -27,8 +27,11 @@ app.use((req, res, next) => {
     next();
 });
 
-const router = require("./routes/crew");
-app.use("/", router);
+const crew = require("./routes/crew");
+app.use("/", crew);
+
+const myinfo = require("./routes/myinfo");
+app.use("/myinfo", myinfo);
 
 app.get("*", (req, res) => {
     res.send("404 Error");
