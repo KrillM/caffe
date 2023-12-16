@@ -6,7 +6,7 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
-    <form class="crewForm" name="updateCrew" action="/myinfo/update/profile" method="patch" enctype="multipart/form-data">
+    <form class="crewForm" name="updateCrew" action="/myinfo/update/profile" method="patch">
         <div class="row mb-3">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
@@ -24,12 +24,6 @@
             <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
             <div class="col-sm-10">
                 <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= user.phoneNumber %>"/>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="profileImage" class="col-sm-2 col-form-label">Profile Image</label>
-            <div class="col-sm-10">
-                <input type="file" name="profileImage" class="form-control" id="profileImage" />
             </div>
         </div>
         <div class="row mb-3">
@@ -107,16 +101,15 @@
             if (!phoneNumberRegex.test(phoneNumber) || phoneNumber.includes('-')) {
                 return (err.innerHTML = '전화번호는 숫자만 입력하고, -를 사용하지 않아야 합니다.');
             }
-        
-            const form = document.forms["updateCrew"];
-            const formData = new FormData();
-            formData.append("email", form.email.value);
-            formData.append("nickname", form.nickname.value);
-            formData.append("phoneNumber", form.phoneNumber.value);
-            formData.append("profileImage", form.profileImage.files[0]);
+
+            const user = {
+                email,
+                nickname,
+                phoneNumber,
+            };
 
             try {
-                const response = await axios.patch(`/myinfo/update/profile`, formData);
+                const response = await axios.patch(`/myinfo/update/profile`, user);
         
                 if (response.data === "ok") {
                     err.innerHTML = '프로필이 수정 되었습니다.';
