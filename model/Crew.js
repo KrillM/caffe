@@ -11,7 +11,7 @@ function Crew(sequelize, DataTypes) {
       },
       // 이메일 설정
       email: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       // 닉네임 설정
@@ -30,7 +30,7 @@ function Crew(sequelize, DataTypes) {
       },
       // 프로필 이미지 설정
       profileImage: {
-        type: DataTypes.BLOB, // 또는 DataTypes.TEXT('long')로 변경
+        type: DataTypes.STRING(500),
       },
     },
     {

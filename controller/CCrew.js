@@ -1,6 +1,24 @@
 const crypto = require("crypto");
 const { Crew } = require("../model");
-const uploadImages = require("../index");
+const multer = require("multer");
+const path = require("path");
+
+const uploadFiles = multer({
+    storage: multer.diskStorage({
+        destination: function(req, file, done){
+            done(null, "files/");
+        },
+        filename: function(req, file, done){
+            console.log(file)
+            const ext = path.extname(file.originalname); 
+            const basename = path.basename(file.originalname, ext); 
+            const fileName = req.body.nickname + "_" + basename + "_" + Date.now() + ext;
+            console.log(req.body);
+            done(null, fileName);
+        }
+    }),
+    limits: {fileSize: 5 * 1024 * 1024}
+})
 
 const hashPassword = (password) => {
     const salt = crypto.randomBytes(16).toString("hex");
@@ -14,14 +32,14 @@ exports.signUpPage = (req, res) => {
 
 exports.signUpProcess = async (req, res, next) => {
     try {
-        await uploadImages.single("profileImage")(req, res, async function (err) {
+        await uploadFiles.single("profileImage")(req, res, async function (err) {
             if (err) {
                 console.error("이미지 업로드 중 오류 발생:", err);
                 return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
             }
 
             const { email, password, nickname, phoneNumber } = req.body;
-            // const { profileImage } = req.path.file;
+            const profileImage = req.file ? req.file.filename : null;
 
             const emailExists = await Crew.findOne({ where: { email } });
             const nicknameExists = await Crew.findOne({ where: { nickname } });
@@ -46,7 +64,7 @@ exports.signUpProcess = async (req, res, next) => {
                 password: hashedPassword,
                 nickname,
                 phoneNumber,
-                // profileImage,
+                profileImage: profileImage || null,
             });
             res.send("ok");
         });
