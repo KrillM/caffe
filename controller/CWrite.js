@@ -1,4 +1,23 @@
-const { Crew } = require("../model");
+const { Crew, Review } = require("../model");
+const multer = require("multer");
+const path = require("path");
+
+const uploadFiles = multer({
+    storage: multer.diskStorage({
+        destination: function(req, file, done){
+            done(null, "files/");
+        },
+        filename: function(req, file, done){
+            console.log(file)
+            const ext = path.extname(file.originalname); 
+            const basename = path.basename(file.originalname, ext); 
+            const fileName = basename + "_" + Date.now() + ext;
+            console.log(req.body);
+            done(null, fileName);
+        }
+    }),
+    limits: {fileSize: 5 * 1024 * 1024}
+})
 
 exports.writePage = (req, res) => {
     if(!req.session.user){
@@ -25,5 +44,10 @@ exports.writePage = (req, res) => {
 }
 
 exports.createReview = (req, res) => {
-    
+    try{
+
+    }
+    catch {
+        
+    }
 }

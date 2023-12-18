@@ -6,12 +6,34 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
+    <form class="crewForm" name="updateNewRepImage" action="/myinfo/update/rep" method="patch" enctype="multipart/form-data">
+        <div class="mb-3 row">
+            <label for="representImage" class="col-sm-2 col-form-label">New My Page Image</label>
+            <div class="col-sm-10">
+                <input type="file" name="representImage" class="form-control" id="representImage"/>
+                <div id="warning" style="color: darkgoldenrod;">선택된 파일이 없을 때 클릭하는 경우 마이 페이지 이미지가 자동으로 사라집니다.</div>
+            </div>
+            <div class="row mb-3">
+                <label for="message" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div id="message4" style="color: red;"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="button" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <button type="button" class="btn btn-warning" onClick="update4NewRepImage()">Update My Page Image</button>  
+                </div>
+            </div>
+        </div>
+    </form>
+
     <form class="crewForm" name="updateNewImage" action="/myinfo/update/image" method="patch" enctype="multipart/form-data">
         <div class="mb-3 row">
             <label for="profileImage" class="col-sm-2 col-form-label">New Profile Image</label>
             <div class="col-sm-10">
                 <input type="file" name="profileImage" class="form-control" id="profileImage"/>
-                <div id="warning" style="color: darkgoldenrod;">선택된 파일이 없을 때 클릭하는 경우 프로필 이미지가 자동 사라집니다.</div>
+                <div id="warning" style="color: darkgoldenrod;">선택된 파일이 없을 때 클릭하는 경우 프로필 이미지가 자동으로 사라집니다.</div>
             </div>
             <div class="row mb-3">
                 <label for="message" class="col-sm-2 col-form-label"></label>
@@ -22,7 +44,7 @@
             <div class="row mb-3">
                 <label for="button" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
-                    <button type="button" class="btn btn-warning" onClick="update4NewImage()">Update Image</button>  
+                    <button type="button" class="btn btn-warning" onClick="update4NewImage()">Update Profile Image</button>  
                 </div>
             </div>
         </div>
@@ -46,6 +68,16 @@
             <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
             <div class="col-sm-10">
                 <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= user.phoneNumber %>"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="nickname" class="col-sm-2 col-form-label">Short Introduction</label>
+            <div class="col-sm-10">
+                <% if(user.bio === null){ %>
+                    <input type="text" name="bio" class="form-control" id="bio" placeholder="간단한 자기 소개를 해보세요."/>
+                <% } else { %>
+                    <input type="text" name="bio" class="form-control" id="bio" value="<%= user.bio %>"/>
+                <% } %>
             </div>
         </div>
         <div class="row mb-3">
@@ -102,6 +134,32 @@
     <%- include('fragments/footerJs') %>
 
     <script>
+        const err4 = document.getElementById("message4");
+
+        const update4NewRepImage = async () => {
+            const form = document.forms["updateNewRepImage"];
+            const formData = new FormData();
+            formData.append("representImage", form.representImage.files[0]);
+
+            try {
+                const response = await axios.patch('/myinfo/update/rep', formData);
+        
+                if (response.data === 'ok') {
+                    err4.innerHTML = '마이페이지 화면 이미지가 수정 되었습니다.';
+                    setTimeout(() => {
+                        err4.innerHTML = '';
+                        document.location.href = '/';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                err3.innerHTML = error.response.data;
+                setTimeout(() => {
+                    err3.innerHTML = '';
+                }, 2000);
+            }
+        }
+
         const err3 = document.getElementById("message3");
 
         const update4NewImage = async () => {
@@ -134,6 +192,7 @@
             const email = document.getElementById("email").value;
             const nickname = document.getElementById("nickname").value;
             const phoneNumber = document.getElementById("phoneNumber").value;
+            const bio = document.getElementById("bio").value;
         
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -149,11 +208,15 @@
             if (!phoneNumberRegex.test(phoneNumber) || phoneNumber.includes('-')) {
                 return (err.innerHTML = '전화번호는 숫자만 입력하고, -를 사용하지 않아야 합니다.');
             }
-
+            
+            if(bio.length > 100){
+                return (err.innerHTML = '간단한 자기소개는 100자 이상 적을 수 없습니다.');
+            }
             const user = {
                 email,
                 nickname,
                 phoneNumber,
+                bio,
             };
 
             try {

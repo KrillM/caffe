@@ -95,7 +95,7 @@ exports.profilePage = (req, res) => {
 }
 
 exports.updateProfile = async (req, res) => {
-    const { email, nickname, phoneNumber } = req.body;
+    const { email, nickname, phoneNumber, bio } = req.body;
 
     try {
         const emailExists = await Crew.findOne({ where: { email } });
@@ -119,6 +119,7 @@ exports.updateProfile = async (req, res) => {
                 email,  // 업데이트하려는 필드를 포함합니다
                 nickname,
                 phoneNumber,
+                bio
             },{
                 where: {
                     email: req.session.user,
@@ -164,6 +165,32 @@ exports.updateImage = async (req, res, next) => {
 
             await Crew.update({
                 profileImage: updateProfileImage
+            },{
+                where: {
+                    email: req.session.user,
+                },
+            }
+        );
+            res.send("ok");
+        });
+    } catch (error) {
+        console.error("프로필 이미지 수정 중 오류 발생:", error);
+        res.status(500).send("프로필 이미지 수정 중 오류가 발생하였습니다.");
+    }
+}
+
+exports.updateRepImage = async (req, res, next) => {
+    try {
+        await uploadFiles.single("representImage")(req, res, async function (err) {
+            if (err) {
+                console.error("이미지 업로드 중 오류 발생:", err);
+                return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
+            }
+
+            const updateRepresentImage = req.file ? req.file.filename : null;
+
+            await Crew.update({
+                myPageImg: updateRepresentImage
             },{
                 where: {
                     email: req.session.user,

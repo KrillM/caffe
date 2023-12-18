@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <%- include('fragments/header') %>
-    <title>마이 페이지</title>
+    <title><%= user.nickname %> 페이지</title>
 </head>
 <body>
     <%- include('fragments/navbar') %>
-    <div class="crewForm">
+    <div class="d-flex justify-content-between crewForm">
         <div class="card" style="width: 18rem;">
             <% if(user.profileImage !== null) { %>
                 <img class="card-img-top" src="../files/<%= user.profileImage %>" alt="Card image cap">
@@ -15,8 +15,31 @@
             <% } %>
             <div class="card-body">
                 <h5 class="card-title"><%= user.nickname %></h5>
-                <p class="card-text">My Page</p>
+                <% if(user.bio !== null) { %>
+                    <p class="card-text"><%= user.bio %></p>
+                <% } else { %>
+                    <p class="card-text">Welcome to <%= user.nickname %>'s Page</p>
+                <% } %>
             </div>
+        </div>
+        <div class="col-sm-9">
+            <% if(user.myPageImg !== null) { %>
+                <img class="card-img-top" src="../files/<%= user.myPageImg %>" alt="Card image cap">
+            <% } else { %>
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../static/sts.jpeg" style="height: 335px;" class="d-block w-100" alt="space shuttle">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../static/apollo.jpeg" style="height: 335px;" class="d-block w-100" alt="moon">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../static/stars.jpeg" style="height: 335px;" class="d-block w-100" alt="stars">
+                        </div>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </div>
     <%- include('fragments/footerJs') %>
