@@ -13,7 +13,7 @@ exports.writePage = (req, res) => {
     }).then((result) => {
         console.log("조회 ", result);
         if(result){
-            res.render("write", {user: result})
+            res.render("write", { user: result })
         }
         else{
             res.redirect("/signup");
@@ -22,4 +22,8 @@ exports.writePage = (req, res) => {
         console.log(err);
         res.status(500).send("접근 오류 발생");
     })
+}
+
+exports.createReview = (req, res) => {
+    
 }

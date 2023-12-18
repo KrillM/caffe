@@ -12,5 +12,6 @@ const sequelize = new Sequelize(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.Crew = require("./Crew")(sequelize, Sequelize);
+db.Review = require("./Review")(sequelize, Sequelize);
 
 module.exports = db;
