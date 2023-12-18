@@ -33,7 +33,7 @@ app.use("/", crew);
 const myinfo = require("./routes/myinfo");
 app.use("/myinfo", myinfo);
 
-const write = require("./routes/crew");
+const write = require("./routes/write");
 app.use("/write", write);
 
 app.get("*", (req, res) => {

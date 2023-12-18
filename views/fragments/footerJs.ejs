@@ -1,4 +1,21 @@
 <script>
+    function createPost() {
+        const form = document.forms["form-post"];
+        const email = form.email.value;
+
+        axios({
+            method: 'get',
+            url: `/write`,
+        data: { email: email }
+        }).then((res) => {
+            const formInfo = document.forms["form-post"];
+            formInfo.email.value = res.data.email;
+            formInfo.submit();
+        }).catch((err) => {
+            alert("게시글 페이지에 접근할 수 없습니다.");
+        });
+    }
+
     function logoutProcess() {
         axios({
             method: 'delete',

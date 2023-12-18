@@ -24,6 +24,12 @@
                         <span class="nav-link active"><%= user.nickname %></span>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/write" onclick="writeReview(); return false;">Write</a>
+                        <form name="form-post" action="/write" method="post">
+                            <input type="hidden" name="email" value="<%= user.email %>">
+                        </form>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/crewpage/<%= user.nickname %>">My Page</a>
                     </li>
                     <li class="nav-item">
