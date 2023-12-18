@@ -33,6 +33,9 @@ app.use("/", crew);
 const myinfo = require("./routes/myinfo");
 app.use("/myinfo", myinfo);
 
+const write = require("./routes/crew");
+app.use("/write", write);
+
 app.get("*", (req, res) => {
     res.send("404 Error");
 });
