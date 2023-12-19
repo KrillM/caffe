@@ -8,8 +8,11 @@ function Review(sequelize, DataTypes) {
                 allowNull: false,
             },
             title: {
-                type: DataTypes.STRING(255),
+                type: DataTypes.STRING(100),
                 allowNull: false,
+            },
+            representImage: {
+                type: DataTypes.STRING(500),
             },
             content: {
                 type: DataTypes.TEXT,

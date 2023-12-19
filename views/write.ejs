@@ -29,7 +29,7 @@
             <input type="text" name="title" class="form-control" id="title" placeholder="제목을 입력해주세요.">
         </div><br/>
         <textarea id="summernote" name="content"></textarea><br/>
-        <input type="hidden" name="writtenBy" value="<%= user.crewId %>" disabled/>
+        <input type="hidden" name="writtenBy" value="<%= user.crewId %>"/>
         <div class="form-group">
             <div id="message" name="content" style="color: red;"></div>
         </div><br/>
@@ -61,8 +61,8 @@
             const formData = new FormData();
             formData.append("title", form.title.value);
             formData.append("content", form.content.value);
-            formData.append("content", form.writtenBy.value);
-            formData.append("images", form.files[0]);
+            formData.append("writtenBy", form.writtenBy.value);
+            formData.append("representImage", form.representImage.files[0]);
 
             if (title.length === 0) {
                 return (err.innerHTML = '제목을 입력해주세요.');

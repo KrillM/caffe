@@ -17,7 +17,7 @@ CREATE TABLE crew (
 
 CREATE TABLE review (
   reviewId INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  title VARCHAR(255) NOT NULL,
+  title VARCHAR(100) NOT NULL,
   representImage VARCHAR(500),
   content LONGTEXT NOT NULL,
   likeNum INT,

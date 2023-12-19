@@ -16,7 +16,10 @@ const uploadFiles = multer({
             done(null, fileName);
         }
     }),
-    limits: {fileSize: 5 * 1024 * 1024}
+    limits: {
+        fileSize: 5 * 1024 * 1024,
+        fieldSize: 100 * 1024 * 1024,
+    }
 })
 
 exports.writePage = (req, res) => {
@@ -43,11 +46,28 @@ exports.writePage = (req, res) => {
     })
 }
 
-exports.createReview = (req, res) => {
+exports.createReview = async (req, res, next) => {
     try{
+        await uploadFiles.single("representImage")(req, res, async function(err) {
+            if (err) {
+                console.error("이미지 업로드 중 오류 발생:", err);
+                return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
+            }
 
+            const { title, content, writtenBy } =req.body;
+            const representImage = req.file ? req.file.filename : null;
+
+            await Review.create({
+                title,
+                content,
+                writtenBy,
+                representImage: representImage || null
+            });
+            res.send("ok");
+        });
     }
-    catch {
-        
+    catch (error) {
+        console.error("글 등록 프로세스 중 오류 발생:", error);
+        res.status(500).send("글 등록 중 오류가 발생하였습니다.");
     }
 }
