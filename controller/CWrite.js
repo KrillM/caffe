@@ -35,7 +35,7 @@ exports.writePage = (req, res) => {
     }).then((result) => {
         console.log("조회 ", result);
         if(result){
-            res.render("write", { user: result })
+            res.render("write", { crew: result })
         }
         else{
             res.redirect("/signup");

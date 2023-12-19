@@ -17,14 +17,14 @@ exports.homePage = async (req, res) => {
             console.log("조회", result);
 
             if (result) {
-                res.render("index", { user: result, review: reviews });
+                res.render("index", { crew: result, review: reviews });
             } else {
                 req.session.destroy((err) => {
-                    res.render("index", { user: null, review: reviews });
+                    res.render("index", { crew: null, review: reviews });
                 });
             }
         } else {
-            res.render("index", { user: null, review: reviews });
+            res.render("index", { crew: null, review: reviews });
         }
     } catch (err) {
         console.log(err);

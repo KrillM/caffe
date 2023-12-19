@@ -83,7 +83,7 @@ exports.profilePage = (req, res) => {
         }).then((result) => {
             console.log("조회", result);
             if(result){
-                res.render("myInfo", { user: result });
+                res.render("myInfo", { crew: result });
             }
         }).catch((err) => {
             console.log(err)

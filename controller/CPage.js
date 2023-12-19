@@ -22,10 +22,10 @@ exports.crewPage = async (req, res) => {
 
             // 현재 로그인한 사용자와 조회된 사용자가 동일한 경우, 현재 사용자의 프로필을 보여줍니다.
             if (currentUser && currentUser.id === result.id) {
-                res.render("crewPage", { user: result, review: results });
+                res.render("crewPage", { crew: result, review: results });
             } else {
                 // 다른 사용자의 프로필을 보여줍니다.
-                res.render("crewPage", { user: result, review: results });
+                res.render("crewPage", { crew: result, review: results });
             }
         } else {
             res.status(404).send("존재하지 않는 사용자입니다.");

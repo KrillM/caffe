@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <%- include('fragments/header') %>
-    <title><%= user.nickname %> 페이지</title>
+    <title><%= crew.nickname %> 페이지</title>
 </head>
 <body>
     <%- include('fragments/navbar') %>
     <div class="justify-content-between crewForm devices">
         <div class="card">
-            <% if(user.myPageImg !== null) { %>
-                <img class="card-img-top" src="../files/<%= user.myPageImg %>" alt="Card image cap">
+            <% if(crew.myPageImg !== null) { %>
+                <img class="card-img-top" src="../files/<%= crew.myPageImg %>" alt="Card image cap">
             <% } else { %>
                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -27,17 +27,17 @@
             <% } %>
         </div>
         <div class="card" style="width: 18rem;">
-            <% if(user.profileImage !== null) { %>
-                <img class="card-img-top" src="../files/<%= user.profileImage %>" alt="Card image cap">
+            <% if(crew.profileImage !== null) { %>
+                <img class="card-img-top" src="../files/<%= crew.profileImage %>" alt="Card image cap">
             <% } else { %>
-                <svg data-jdenticon-value="<%= user.nickname %>"></svg>
+                <svg data-jdenticon-value="<%= crew.nickname %>"></svg>
             <% } %>
             <div class="card-body">
-                <h5 class="card-title"><%= user.nickname %></h5>
-                <% if(user.bio !== null) { %>
-                    <p class="card-text"><%= user.bio %></p>
+                <h5 class="card-title"><%= crew.nickname %></h5>
+                <% if(crew.bio !== null) { %>
+                    <p class="card-text"><%= crew.bio %></p>
                 <% } else { %>
-                    <p class="card-text">Welcome to <%= user.nickname %>'s Page</p>
+                    <p class="card-text">Welcome to <%= crew.nickname %>'s Page</p>
                 <% } %>
             </div>
         </div>

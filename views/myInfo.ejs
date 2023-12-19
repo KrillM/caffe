@@ -54,20 +54,20 @@
         <div class="row mb-3">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="email" name="email" class="form-control" id="email" value="<%= user.email %>" />
+                <input type="email" name="email" class="form-control" id="email" value="<%= crew.email %>" />
                 <div id="warning" style="color: darkgoldenrod;">이메일 수정 시 자동 로그아웃 됩니다.</div>
             </div>
         </div>
         <div class="row mb-3">
             <label for="nickname" class="col-sm-2 col-form-label">Nickname</label>
             <div class="col-sm-10">
-                <input type="text" name="nickname" class="form-control" id="nickname" value="<%= user.nickname %>">
+                <input type="text" name="nickname" class="form-control" id="nickname" value="<%= crew.nickname %>">
             </div>
         </div>
         <div class="row mb-3">
             <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
             <div class="col-sm-10">
-                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= user.phoneNumber %>"/>
+                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="<%= crew.phoneNumber %>"/>
             </div>
         </div>
         <div class="row mb-3">
@@ -76,7 +76,7 @@
                 <% if(user.bio === null){ %>
                     <input type="text" name="bio" class="form-control" id="bio" placeholder="간단한 자기 소개를 해보세요."/>
                 <% } else { %>
-                    <input type="text" name="bio" class="form-control" id="bio" value="<%= user.bio %>"/>
+                    <input type="text" name="bio" class="form-control" id="bio" value="<%= crew.bio %>"/>
                 <% } %>
             </div>
         </div>
