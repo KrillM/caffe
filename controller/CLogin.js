@@ -1,30 +1,36 @@
 const crypto = require("crypto");
-const { Crew } = require("../model");
+const { Crew, Review } = require("../model");
 
-exports.homePage = (req, res) => {
-    if(req.session.user){
-        Crew.findOne({
-            where:{
-                email: req.session.user
-            }
-        }).then((result) => {
+exports.homePage = async (req, res) => {
+    try {
+        const reviews = await Review.findAll({
+            include: [{ model: Crew, attributes: ["nickname"] }],
+        });
+
+        if (req.session.user) {
+            const result = await Crew.findOne({
+                where: {
+                    email: req.session.user
+                }
+            });
+
             console.log("조회", result);
-            if(result){
-                res.render("index", { user: result });
-            }
-            else{
+
+            if (result) {
+                res.render("index", { user: result, review: reviews });
+            } else {
                 req.session.destroy((err) => {
-                    res.render("index", { user: null });
-                })
+                    res.render("index", { user: null, review: reviews });
+                });
             }
-        }).catch((err) => {
-            console.log(err)
-            res.status(500).send("접근 오류 발생")
-        })
-    } else {
-        res.render("index", { user: null });
+        } else {
+            res.render("index", { user: null, review: reviews });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("접근 오류 발생");
     }
-}
+};
 
 exports.loginPage = (req, res) => {
     res.render("login")

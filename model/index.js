@@ -14,4 +14,7 @@ db.Sequelize = Sequelize;
 db.Crew = require("./Crew")(sequelize, Sequelize);
 db.Review = require("./Review")(sequelize, Sequelize);
 
+db.Crew.hasMany(db.Review, { foreignKey: 'writtenBy', sourceKey: 'crewId' });
+db.Review.belongsTo(db.Crew, { foreignKey: 'writtenBy', targetKey: 'crewId' });
+
 module.exports = db;
