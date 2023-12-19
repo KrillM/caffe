@@ -6,7 +6,26 @@
 </head>
 <body>
     <%- include('fragments/navbar') %>
-    <div class="d-flex justify-content-between crewForm">
+    <div class="justify-content-between crewForm devices">
+        <div class="card">
+            <% if(user.myPageImg !== null) { %>
+                <img class="card-img-top" src="../files/<%= user.myPageImg %>" alt="Card image cap">
+            <% } else { %>
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../static/sts.jpeg" height="400px" class="d-block w-100" alt="space shuttle">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../static/apollo.jpeg" height="400px" class="d-block w-100" alt="moon">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../static/stars.jpeg" height="400px" class="d-block w-100" alt="stars">
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
         <div class="card" style="width: 18rem;">
             <% if(user.profileImage !== null) { %>
                 <img class="card-img-top" src="../files/<%= user.profileImage %>" alt="Card image cap">
@@ -21,25 +40,6 @@
                     <p class="card-text">Welcome to <%= user.nickname %>'s Page</p>
                 <% } %>
             </div>
-        </div>
-        <div class="col-sm-9">
-            <% if(user.myPageImg !== null) { %>
-                <img class="card-img-top" src="../files/<%= user.myPageImg %>" alt="Card image cap">
-            <% } else { %>
-                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="../static/sts.jpeg" style="height: 335px;" class="d-block w-100" alt="space shuttle">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../static/apollo.jpeg" style="height: 335px;" class="d-block w-100" alt="moon">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../static/stars.jpeg" style="height: 335px;" class="d-block w-100" alt="stars">
-                        </div>
-                    </div>
-                </div>
-            <% } %>
         </div>
     </div>
     <%- include('fragments/footerJs') %>
