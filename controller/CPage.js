@@ -1,4 +1,4 @@
-const { Crew } = require("../model");
+const { Crew, Review } = require("../model");
 
 exports.crewPage = async (req, res) => {
     try {
@@ -15,12 +15,17 @@ exports.crewPage = async (req, res) => {
         console.log("조회", result);
 
         if (result) {
+            const results = await Review.findAll({
+                where: {writtenBy: result.crewId},
+                include: [{ model: Crew, attributes: ["nickname"] }],
+            })
+
             // 현재 로그인한 사용자와 조회된 사용자가 동일한 경우, 현재 사용자의 프로필을 보여줍니다.
             if (currentUser && currentUser.id === result.id) {
-                res.render("crewPage", { user: result });
+                res.render("crewPage", { user: result, review: results });
             } else {
                 // 다른 사용자의 프로필을 보여줍니다.
-                res.render("crewPage", { user: result });
+                res.render("crewPage", { user: result, review: results });
             }
         } else {
             res.status(404).send("존재하지 않는 사용자입니다.");
