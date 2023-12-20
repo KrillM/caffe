@@ -9,14 +9,24 @@
 
     <div class="jumbotron jumbotron-fluid crewForm">
         <div class="container">
-            <img src="../static/virtualLake.png" class="img-fluid" />
-
-            <h1 class="display-4">해볼라고</h1>
-            <div class="nav justify-content-end">
-                <span>created 2023-12-20 and written by Krille</span>
-            </div>
+            <% if(review.representImage !== null) { %>
+                <img src="../files/<%= review.representImage %>" class="img-fluid" />
+            <% } else { %>
+                <img src="../static/virtualLake.png" class="img-fluid" />
+            <% } %>
+            <h1 class="display-4"><%= review.title %></h1>
+            <p class="nav justify-content-end">
+                <% if(review.updatedAt !== review.createdAt) { %>
+                    <span>Updated At <%= review.updatedAt %></span>
+                <% } else { %>
+                    <span>Created At at <%= review.createdAt %></span>
+                <% } %>
+            </p>
+            <p class="nav justify-content-end">
+                <span>Written by <%= review.crew.nickname %></span>
+            </p>
             <hr/>
-            <p class="lead">형돈이가 랩을 한다 홍홍홍.</p>
+            <p class="lead"><%- review.content %></p>
         </div>
     </div>
 

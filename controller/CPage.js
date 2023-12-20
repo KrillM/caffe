@@ -36,8 +36,11 @@ exports.crewPage = async (req, res) => {
 
 exports.readReviewPage = async (req, res) => {
     try {
-        const reviews = await Review.findAll({
-            include: [{ model: Crew, attributes: ["nickname"] }],
+        const reviewId = req.params.reviewId;
+
+        const reviews = await Review.findOne({
+            where: { reviewId: reviewId },
+            include: [{ model: Crew, attributes: ["nickname"] }]
         });
 
         if (req.session.user) {
