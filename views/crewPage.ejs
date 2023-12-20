@@ -9,7 +9,7 @@
     <div class="justify-content-between crewForm devices">
         <div class="card">
             <% if(crew.myPageImg !== null) { %>
-                <img class="card-img-top" src="../files/<%= crew.myPageImg %>" alt="Card image cap">
+                <img class="img-fluid" src="../files/<%= crew.myPageImg %>" alt="Card image cap">
             <% } else { %>
                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -28,7 +28,7 @@
         </div>
         <div class="card" style="width: 18rem;">
             <% if(crew.profileImage !== null) { %>
-                <img class="card-img-top" src="../files/<%= crew.profileImage %>" alt="Card image cap">
+                <img class="img-thumbnail" src="../files/<%= crew.profileImage %>" alt="Card image cap">
             <% } else { %>
                 <svg data-jdenticon-value="<%= crew.nickname %>"></svg>
             <% } %>

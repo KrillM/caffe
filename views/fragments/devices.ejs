@@ -1,22 +1,24 @@
 <div class="devices">
     <% for(let i=0; i < review.length; i++) { %>
         <div class="card mb-3">
-            <% if(review[i].representImage !== null) { %>
-                <img src="../files/<%= review[i].representImage %>" class="card-img-top" alt="...">
-            <% } else { %>
-                <img src="/static/kinkakuzi.jpg" class="card-img-top" alt="...">
-            <% } %>
-            <div class="card-body">
-            <h5 class="card-title"><%= review[i].title %></h5>
-            <p class="card-text">written by <%= review[i].crew.nickname %></p>
-            <p class="card-text">
-                <% if (review[i].createdAt.getTime() !== review[i].updatedAt.getTime()) { %>
-                <small class="text-body-secondary">Updated At <%= review[i].updatedAt.toLocaleString() %></small>
+            <a class="nav-link active" aria-current="page" href="/review/<%= review[i].reviewId %>">
+                <% if(review[i].representImage !== null) { %>
+                    <img src="../files/<%= review[i].representImage %>" class="card-img-top" alt="...">
                 <% } else { %>
-                <small class="text-body-secondary">Created At <%= review[i].createdAt.toLocaleString() %></small>
+                    <img src="/static/kinkakuzi.jpg" class="card-img-top" alt="...">
                 <% } %>
-            </p>
-            </div>
+                <div class="card-body">
+                <h5 class="card-title"><%= review[i].title %></h5>
+                <p class="card-text">written by <%= review[i].crew.nickname %></p>
+                <p class="card-text">
+                    <% if (review[i].createdAt.getTime() !== review[i].updatedAt.getTime()) { %>
+                    <small class="text-body-secondary">Updated At <%= review[i].updatedAt.toLocaleString() %></small>
+                    <% } else { %>
+                    <small class="text-body-secondary">Created At <%= review[i].createdAt.toLocaleString() %></small>
+                    <% } %>
+                </p>
+                </div>
+            </a>
         </div>
     <% } %>
   </div>

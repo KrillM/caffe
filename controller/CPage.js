@@ -12,8 +12,6 @@ exports.crewPage = async (req, res) => {
             }
         });
 
-        console.log("조회", result);
-
         if (result) {
             const results = await Review.findAll({
                 where: {writtenBy: result.crewId},
@@ -34,4 +32,8 @@ exports.crewPage = async (req, res) => {
         console.log(err);
         res.status(500).send("접근 오류 발생");
     }
+}
+
+exports.readReviewPage = (req, res) => {
+    res.render("readReview");
 }

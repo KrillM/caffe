@@ -13,5 +13,6 @@ router.post("/login", login.loginProcess);
 router.delete("/logout", login.logoutProcess);
 
 router.get("/crewpage/:nickname", crewpage.crewPage);
+router.get("/review/:reviewId", crewpage.readReviewPage);
 
 module.exports=router;
