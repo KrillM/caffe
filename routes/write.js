@@ -6,4 +6,7 @@ router.get("/", write.writePage);
 router.post("/", write.writePage);
 router.post("/create", write.createReview);
 
+router.get("/update/:reviewId", write.updateReviewPage);
+router.post("/update/:reviewId", write.updateReviewPage);
+
 module.exports=router;

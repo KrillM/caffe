@@ -71,3 +71,30 @@ exports.createReview = async (req, res, next) => {
         res.status(500).send("글 등록 중 오류가 발생하였습니다.");
     }
 }
+
+exports.updateReviewPage = async (req, res) => {
+    try{
+        if(!req.session.user){
+            res.redirect("/");
+            return false;
+        }
+    
+        const result = await Crew.findOne({
+            where:{ email: req.session.user }
+        })
+    
+        if(result) {
+            const id = req.params.reviewId;
+            const results = await Review.findOne({
+                where: { reviewId: id }
+            })
+            res.render("updateReview", {crew: result, review: results});
+        } else {
+            res.status(404).send("존재하지 않는 사용자입니다.");
+        }
+    }
+    catch {
+        console.log(err);
+        res.status(500).send("접근 오류 발생");
+    }
+}

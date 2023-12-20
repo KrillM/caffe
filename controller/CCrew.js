@@ -75,23 +75,24 @@ exports.signUpProcess = async (req, res, next) => {
 };
 
 exports.profilePage = (req, res) => {
-    if(req.session.user){
-        Crew.findOne({
-            where:{
-                email: req.session.user
-            }
-        }).then((result) => {
-            console.log("조회", result);
-            if(result){
-                res.render("myInfo", { crew: result });
-            }
-        }).catch((err) => {
-            console.log(err)
-            res.status(500).send("접근 오류 발생")
-        })
-    } else {
-        res.render("index");
+    if(!req.session.user){
+        res.redirect("/")
+        return false;
     }
+
+    Crew.findOne({
+        where:{
+            email: req.session.user
+        }
+    }).then((result) => {
+        console.log("조회", result);
+        if(result){
+            res.render("myInfo", { crew: result });
+        }
+    }).catch((err) => {
+        console.log(err)
+        res.status(500).send("접근 오류 발생")
+    })
 }
 
 exports.updateProfile = async (req, res) => {

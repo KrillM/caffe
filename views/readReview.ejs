@@ -27,7 +27,11 @@
             </p>
             <div class="nav justify-content-end">
                 <% if(isLoggedIn && crew && crew.crewId === review.writtenBy) { %>
-                    <button type="button" class="btn btn-outline-warning">Edit</button>
+                    <button type="button" class="btn btn-outline-warning" onClick="goUpdateReview()">Edit</button>
+                    <form name="form-patch" action="/write/update/<%= review.reviewId %>" method="post">
+                        <input type="hidden" name="email" value="<%= crew.email %>">
+                        <input type="hidden" name="reviewId" value="<%= review.reviewId %>">
+                    </form>
                 <% } else {%>
                 <% } %> 
             </div>
@@ -38,5 +42,25 @@
 
     <%- include('fragments/footer') %>
     <%- include('fragments/footerJs') %>
+    <script>
+        function goUpdateReview() {
+            const form = document.forms["form-patch"];
+            const email = form.email.value;
+            const reviewId = form.reviewId.value;
+
+            axios({
+                method: 'get',
+                url: `/write/update/<%= review.reviewId %>`,
+                data: { email: email }
+            }).then((res) => {
+                const formInfo = document.forms["form-patch"];
+                formInfo.email.value = res.data.email;
+                formInfo.reviewId.value = res.data.reviewId;
+                formInfo.submit();
+            }).catch((err) => {
+                alert("글 수정 페이지에 접근할 수 없습니다.");
+            });
+        }
+    </script>
 </body>
 </html>

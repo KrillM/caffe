@@ -1,5 +1,5 @@
 <div class="devices">
-    <% for(let i=0; i < review.length; i++) { %>
+    <% for(let i = review.length - 1 ; i >= 0; i--) { %>
         <div class="card mb-3">
             <a class="nav-link active" aria-current="page" href="/review/<%= review[i].reviewId %>">
                 <% if(review[i].representImage !== null) { %>

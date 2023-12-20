@@ -2,44 +2,69 @@
 <html lang="en">
 <head>
     <%- include('fragments/header') %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css"
-        integrity="sha256-IKhQVXDfwbVELwiR0ke6dX+pJt0RSmWky3WB2pNx9Hg=" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"
-        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
-        integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
-
-    <!-- language pack -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js"
-        1integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-    <title>글 쓰기</title>
+    <%- include('fragments/summernote') %>
+    <title>글 수정하기</title>
 </head>
 <body>
     <%- include('fragments/navbar') %>
 
-    <form class="crewForm" name="writeContent" action="/write/update" method="post" enctype="multipart/form-data">
+    <form class="crewForm" name="updateRepresentImage" action="/write/update/image" method="patch" enctype="multipart/form-data">
         <div class="form-group">
             <label for="representImage">대표 이미지</label>
-            <input type="file" name="representImage" class="form-control" id="representImage">
-        </div><br/>
+            <input type="file" name="representImage" class="form-control" id="representImage"><br/>
+            <button type="button" class="btn btn-warning" onClick="updateImg()">Change Image</button>
+        </div>
+        <div class="form-group">
+            <div id="message3" name="content" style="color: red;"></div>
+        </div>
+    </form>
+
+    <form class="crewForm" name="updateContent" action="/write/update/content" method="patch" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" name="title" class="form-control" id="title" value="<%= review.title %>">
         </div><br/>
-        <textarea id="summernote" name="content" value="<%= review.content %>"></textarea><br/>
-        <input type="hidden" name="writtenBy" value="<%= crew.crewId %>"/>
+        <textarea id="summernote" name="content"><%- review.content %></textarea><br/>
         <div class="form-group">
             <div id="message" name="content" style="color: red;"></div>
         </div><br/>
-        <button type="button" class="btn btn-info" onClick="updateCancel()">Cancel</button>
-        <button type="button" class="btn btn-success" onClick="createReview()">Submit</button>
+        <button type="button" class="btn btn-warning" onClick="updateReview()">Update Review</button>
     </form>
+
+    <div class="crewForm" name="cancelOrDelete">
+        <button type="button" class="btn btn-info" onClick="updateCancel()">Cancel</button>
+        <button type="button" class="btn btn-danger" onClick="deleteReview()">Delete</button>
+    </div>
 
     <%- include('fragments/footer') %>
     <%- include('fragments/footerJs') %>
     <script>
+        const err3 = document.getElementById("message");
+
+        const updateImg = async () => {
+            const form = document.forms["updateRepresentImage"];
+            const formData = new FormData();
+            formData.append("representImage", form.representImage.files[0]);
+
+            try {
+                const response = await axios.patch('/write/update/image', formData);
+        
+                if (response.data === 'ok') {
+                    err3.innerHTML = '프로필 이미지가 수정 되었습니다.';
+                    setTimeout(() => {
+                        err3.innerHTML = '';
+                        document.location.href = '/';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                err3.innerHTML = error.response.data;
+                setTimeout(() => {
+                    err3.innerHTML = '';
+                }, 2000);
+            }
+        }
+
         const err = document.getElementById("message");
 
         const updateCancel = () => {
@@ -56,11 +81,10 @@
             const title = document.getElementById("title").value;
             const content = document.getElementById("summernote").value;
         
-            const form = document.forms["writeContent"];
+            const form = document.forms["updateContent"];
             const formData = new FormData();
             formData.append("title", form.title.value);
             formData.append("content", form.content.value);
-            formData.append("writtenBy", form.writtenBy.value);
 
             if (title.length === 0) {
                 return (err.innerHTML = '제목을 입력해주세요.');
@@ -75,7 +99,7 @@
             }
 
             try {
-                const response = await axios.post('/write/update', formData);
+                const response = await axios.patch('/write/update/content', formData);
         
                 if (response.data === 'ok') {
                     err.innerHTML = '글이 수정되었습니다.';
@@ -92,6 +116,18 @@
                 }, 2000);
             }
         };
+
+        function deleteReview(){
+            axios({
+                method: 'delete',
+                url: `/write/delete`
+            }).then((res) => {
+                alert("글이 삭제되었습니다.");
+                location.href = "/";
+            }).catch((err) => {
+                alert("글 삭제가 불가능합니다.");
+            })
+        }
     </script>
 </body>
 </html>
