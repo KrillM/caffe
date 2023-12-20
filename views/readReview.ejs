@@ -25,6 +25,12 @@
             <p class="nav justify-content-end">
                 <span>Written by <%= review.crew.nickname %></span>
             </p>
+            <div class="nav justify-content-end">
+                <% if(isLoggedIn && crew && crew.crewId === review.writtenBy) { %>
+                    <button type="button" class="btn btn-outline-warning">Edit</button>
+                <% } else {%>
+                <% } %> 
+            </div>
             <hr/>
             <p class="lead"><%- review.content %></p>
         </div>
