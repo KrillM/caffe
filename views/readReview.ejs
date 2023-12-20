@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('fragments/header') %>
-    <title>글 읽기</title>
+    <title><%= review.title %></title>
 </head>
 <body>
     <%- include('fragments/navbar') %>
@@ -16,10 +16,10 @@
             <% } %>
             <h1 class="display-4"><%= review.title %></h1>
             <p class="nav justify-content-end">
-                <% if(review.updatedAt !== review.createdAt) { %>
-                    <span>Updated At <%= review.updatedAt %></span>
+                <% if(review.updatedAt.getTime() !== review.createdAt.getTime()) { %>
+                    <span>Updated At <%= review.updatedAt.toLocaleString() %></span>
                 <% } else { %>
-                    <span>Created At at <%= review.createdAt %></span>
+                    <span>Created At at <%= review.createdAt.toLocaleString() %></span>
                 <% } %>
             </p>
             <p class="nav justify-content-end">

@@ -19,16 +19,16 @@
 <body>
     <%- include('fragments/navbar') %>
 
-    <form class="crewForm" name="writeContent" action="/write/create" method="post" enctype="multipart/form-data">
+    <form class="crewForm" name="writeContent" action="/write/update" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="representImage">대표 이미지</label>
             <input type="file" name="representImage" class="form-control" id="representImage">
         </div><br/>
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" name="title" class="form-control" id="title" placeholder="제목을 입력해주세요.">
+            <input type="text" name="title" class="form-control" id="title" value="<%= review.title %>">
         </div><br/>
-        <textarea id="summernote" name="content"></textarea><br/>
+        <textarea id="summernote" name="content" value="<%= review.content %>"></textarea><br/>
         <input type="hidden" name="writtenBy" value="<%= crew.crewId %>"/>
         <div class="form-group">
             <div id="message" name="content" style="color: red;"></div>
@@ -47,13 +47,12 @@
         };
 
         $('#summernote').summernote({
-            placeholder: '내용을 입력해주세요',
             tabsize: 2,
             height: 400,
             lang: 'ko-KR', // default: 'en-US'
         });
 
-        const createReview = async () => {
+        const updateReview = async () => {
             const title = document.getElementById("title").value;
             const content = document.getElementById("summernote").value;
         
@@ -62,7 +61,6 @@
             formData.append("title", form.title.value);
             formData.append("content", form.content.value);
             formData.append("writtenBy", form.writtenBy.value);
-            formData.append("representImage", form.representImage.files[0]);
 
             if (title.length === 0) {
                 return (err.innerHTML = '제목을 입력해주세요.');
@@ -77,13 +75,13 @@
             }
 
             try {
-                const response = await axios.post('/write/create', formData);
+                const response = await axios.post('/write/update', formData);
         
                 if (response.data === 'ok') {
-                    err.innerHTML = '글이 등록되었습니다.';
+                    err.innerHTML = '글이 수정되었습니다.';
                     setTimeout(() => {
                         err.innerHTML = '';
-                        document.location.href = '/crewpage/<%= crew.nickname %>';
+                        document.location.href = '/';
                     }, 2000);
                 }
             } catch (error) {
