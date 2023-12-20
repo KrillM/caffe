@@ -5,9 +5,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <% if(isLoggedIn && user) { %>
+            <% if(isLoggedIn && crew) { %>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <% if(user.profileImage !== null) { %>
+                    <% if(crew.profileImage !== null) { %>
                     <li class="nav-item">
                         <span class="nav-link active">
                             <img src="../files/<%= crew.profileImage %>" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
@@ -21,12 +21,12 @@
                     </li>
                     <% } %>
                     <li class="nav-item">
-                        <span class="nav-link active"><%= user.nickname %></span>
+                        <span class="nav-link active"><%= crew.nickname %></span>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/write" onclick="writeReview(); return false;">Write</a>
                         <form name="form-post" action="/write" method="post">
-                            <input type="hidden" name="email" value="<%= user.email %>">
+                            <input type="hidden" name="email" value="<%= crew.email %>">
                         </form>
                     </li>
                     <li class="nav-item">

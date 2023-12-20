@@ -7,7 +7,7 @@
 <body>
     <%- include('fragments/navbar') %>
     <div class="justify-content-between crewForm devices">
-        <div class="card">
+        <div class="card col-sm-8">
             <% if(crew.myPageImg !== null) { %>
                 <img class="img-fluid" src="../files/<%= crew.myPageImg %>" alt="Card image cap">
             <% } else { %>
@@ -26,7 +26,7 @@
                 </div>
             <% } %>
         </div>
-        <div class="card" style="width: 18rem;">
+        <div class="card col-sm-4" style="width: 18rem;">
             <% if(crew.profileImage !== null) { %>
                 <img class="img-thumbnail" src="../files/<%= crew.profileImage %>" alt="Card image cap">
             <% } else { %>

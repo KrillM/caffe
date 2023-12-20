@@ -34,6 +34,31 @@ exports.crewPage = async (req, res) => {
     }
 }
 
-exports.readReviewPage = (req, res) => {
-    res.render("readReview");
+exports.readReviewPage = async (req, res) => {
+    try {
+        const reviews = await Review.findAll({
+            include: [{ model: Crew, attributes: ["nickname"] }],
+        });
+
+        if (req.session.user) {
+            const result = await Crew.findOne({
+                where: {
+                    email: req.session.user
+                }
+            });
+
+            if (result) {
+                res.render("readReview", { crew: result, review: reviews });
+            } else {
+                req.session.destroy((err) => {
+                    res.render("readReview", { crew: null, review: reviews });
+                });
+            }
+        } else {
+            res.render("readReview", { crew: null, review: reviews });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("접근 오류 발생");
+    }
 }
