@@ -54,7 +54,7 @@ exports.createReview = async (req, res, next) => {
                 return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
             }
 
-            const { title, content, writtenBy } =req.body;
+            const { title, content, writtenBy } = req.body;
             const representImage = req.file ? req.file.filename : null;
 
             await Review.create({
@@ -96,6 +96,56 @@ exports.updateReviewPage = async (req, res) => {
     catch {
         console.log(err);
         res.status(500).send("접근 오류 발생");
+    }
+}
+
+exports.updateReviewContent = async (req, res, next) => {
+    try{
+        await uploadFiles.single("fakeImage")(req, res, async function(err) {
+            if (err) {
+                console.error("이미지 업로드 중 오류 발생:", err);
+                return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
+            }
+
+            const { title, content } = req.body;
+
+            await Review.update({
+                title,
+                content,
+            }, {
+                where: { reviewId : req.params.reviewId }
+            });
+            res.send("ok");
+        });
+    }
+    catch (error) {
+        console.error("글 수정 프로세스 중 오류 발생:", error);
+        res.status(500).send("글 수정 중 오류가 발생하였습니다.");
+    }
+}
+
+exports.updateReviewImage = async (req, res, next) => {
+    try {
+        await uploadFiles.single("representImage")(req, res, async function (err) {
+            if (err) {
+                console.error("이미지 업로드 중 오류 발생:", err);
+                return res.status(500).send("이미지 업로드 중 오류가 발생했습니다.");
+            }
+
+            const updateRepresentImage = req.file ? req.file.filename : null;
+
+            await Review.update({
+                representImage: updateRepresentImage
+            },{
+                where: {
+                    reviewId: req.params.reviewId
+                }
+            });
+            res.send("ok");
+        });
+    } catch (error) {
+        console.error("프로필 이미지 수정 중 오류 발생:", error);
+        res.status(500).send("프로필 이미지 수정 중 오류가 발생하였습니다.");
     }
 }
 

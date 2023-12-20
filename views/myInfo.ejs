@@ -145,10 +145,10 @@
                 const response = await axios.patch('/myinfo/update/rep', formData);
         
                 if (response.data === 'ok') {
-                    err4.innerHTML = '마이페이지 화면 이미지가 수정 되었습니다.';
+                    err4.innerHTML = '마이페이지 대표 이미지가 수정 되었습니다.';
                     setTimeout(() => {
                         err4.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/crewpage/<%= crew.nickname %>';
                     }, 2000);
                 }
             } catch (error) {
@@ -174,7 +174,7 @@
                     err3.innerHTML = '프로필 이미지가 수정 되었습니다.';
                     setTimeout(() => {
                         err3.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/crewpage/<%= crew.nickname %>';
                     }, 2000);
                 }
             } catch (error) {
@@ -226,7 +226,7 @@
                     err.innerHTML = '프로필이 수정 되었습니다.';
                     setTimeout(() => {
                         err.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/crewpage/<%= crew.nickname %>';
                     }, 2000);
                 }
             } catch (error) {
@@ -264,7 +264,7 @@
                     err2.innerHTML = '비밀번호가 수정 되었습니다.';
                     setTimeout(() => {
                         err2.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/crewpage/<%= crew.nickname %>';
                     }, 2000);
                 }
             } catch (error) {
