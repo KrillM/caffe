@@ -22,6 +22,9 @@
                         <div class="carousel-item">
                             <img src="../static/stars.jpeg" height="400px" class="d-block w-100" alt="stars">
                         </div>
+                        <div class="carousel-item">
+                            <img src="../static/kiomizutera.jpg" height="400px" class="d-block w-100" alt="temple">
+                        </div>
                     </div>
                 </div>
             <% } %>
@@ -34,10 +37,10 @@
             <% } %>
             <div class="card-body">
                 <h5 class="card-title"><%= crew.nickname %></h5>
-                <% if(crew.bio !== null) { %>
-                    <p class="card-text"><%= crew.bio %></p>
-                <% } else { %>
+                <% if(crew.bio === '') { %>
                     <p class="card-text">Welcome to <%= crew.nickname %>'s Page</p>
+                <% } else { %>
+                    <p class="card-text"><%= crew.bio %></p>
                 <% } %>
             </div>
         </div>
