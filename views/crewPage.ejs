@@ -37,7 +37,7 @@
             <% } %>
             <div class="card-body">
                 <h5 class="card-title"><%= crew.nickname %></h5>
-                <% if(crew.bio === '') { %>
+                <% if(crew.bio === '' || crew.bio === null) { %>
                     <p class="card-text">Welcome to <%= crew.nickname %>'s Page</p>
                 <% } else { %>
                     <p class="card-text"><%= crew.bio %></p>

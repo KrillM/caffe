@@ -50,10 +50,10 @@
                 const response = await axios.patch('/write/update/image', formData);
         
                 if (response.data === 'ok') {
-                    err3.innerHTML = '프로필 이미지가 수정 되었습니다.';
+                    err3.innerHTML = '리뷰 대표 이미지가 수정 되었습니다.';
                     setTimeout(() => {
                         err3.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/review/<%= review.reviewId %>';
                     }, 2000);
                 }
             } catch (error) {
@@ -105,7 +105,7 @@
                     err.innerHTML = '글이 수정되었습니다.';
                     setTimeout(() => {
                         err.innerHTML = '';
-                        document.location.href = '/';
+                        document.location.href = '/review/<%= review.reviewId %>';
                     }, 2000);
                 }
             } catch (error) {
@@ -120,7 +120,7 @@
         function deleteReview(){
             axios({
                 method: 'delete',
-                url: `/write/delete`
+                url: '/write/delete/<%= review.reviewId %>'
             }).then((res) => {
                 alert("글이 삭제되었습니다.");
                 location.href = "/";

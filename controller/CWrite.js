@@ -98,3 +98,17 @@ exports.updateReviewPage = async (req, res) => {
         res.status(500).send("접근 오류 발생");
     }
 }
+
+exports.deleteReview = (req, res) => {
+    Review.destroy({
+        where:{
+            reviewId: req.params.reviewId,
+        }
+    }).then((result) => {
+        console.log("삭제 ",result);
+        res.send({ result: true })
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send();
+    })
+}
