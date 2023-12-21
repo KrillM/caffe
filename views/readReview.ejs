@@ -32,11 +32,21 @@
                         <input type="hidden" name="email" value="<%= crew.email %>">
                         <input type="hidden" name="reviewId" value="<%= review.reviewId %>">
                     </form>
-                <% } else {%>
+                <% } else { %>
                 <% } %> 
             </div>
             <hr/>
             <p class="lead"><%- review.content %></p>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <% if(isLoggedIn && crew) { %>
+                    <textarea class="form-control" name="comment" rows="2" id="comment"></textarea><br/>
+                    <button type="button" class="btn btn-outline-info">Cancel</button>
+                    <button type="button" class="btn btn-outline-success">Comment</button>
+                <%} else { %>
+                    <textarea class="form-control" name="comment" rows="2" readonly>로그인 후 댓글 작성이 가능합니다.</textarea><br/>
+                <% } %>
+            </div>
         </div>
     </div>
 
