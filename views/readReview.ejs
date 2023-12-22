@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="comment">Comment</label>
                 <% if(isLoggedIn && crew) { %>
-                    <input type="text" name="comment" class="form-control addtxt" /><br/>
+                    <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
                         <button type="button" class="btn btn-outline-success btn-sm">Comment</button>
@@ -99,6 +99,11 @@
             }).catch((err) => {
                 alert("글 수정 페이지에 접근할 수 없습니다.");
             });
+        }
+
+        function cleanComment(){
+            var commentInput = document.getElementById('commentInput');
+            commentInput.value = '';
         }
     </script>
 </body>
