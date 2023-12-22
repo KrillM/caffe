@@ -80,7 +80,7 @@
                             <div class="d-flex gap-2 justify-content-end">
                                 <% if(isLoggedIn && crew && crew.crewId === comment[i].writtenBy) { %>
                                     <button type="button" class="btn btn-outline-info btn-sm">Update</button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteCommentProcess('<%= comment[i].commentId %>')">Delete</button>
                                 <% } %>
                             </div>
                         </div>
@@ -147,6 +147,18 @@
                 location.reload();
             }).catch((err) => {
                 alert("댓글을 작성할 수 없습니다.")
+            })
+        }
+
+        function deleteCommentProcess(commentId){
+            axios({
+                method: 'delete',
+                url: `/comment/delete/${commentId}`
+            }).then((res) => {
+                alert("댓글을 삭제했습니다.");
+                document.location.href=`/review/<%= review.reviewId %>`;
+            }).catch((err) => {
+                alert("댓글을 삭제할 수 없습니다.");
             })
         }
     </script>
