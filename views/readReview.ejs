@@ -27,7 +27,7 @@
             </p>
             <div class="nav justify-content-end">
                 <% if(isLoggedIn && crew && crew.crewId === review.writtenBy) { %>
-                    <button type="button" class="btn btn-outline-warning" onClick="goUpdateReview()">Edit</button>
+                    <button type="button" class="btn btn-outline-warning btn-sm" onClick="goUpdateReview()">Edit</button>
                     <form name="form-patch" action="/write/update/<%= review.reviewId %>" method="post">
                         <input type="hidden" name="email" value="<%= crew.email %>">
                         <input type="hidden" name="reviewId" value="<%= review.reviewId %>">
@@ -40,12 +40,52 @@
             <div class="form-group">
                 <label for="comment">Comment</label>
                 <% if(isLoggedIn && crew) { %>
-                    <textarea class="form-control" name="comment" rows="2" id="comment"></textarea><br/>
-                    <button type="button" class="btn btn-outline-info">Cancel</button>
-                    <button type="button" class="btn btn-outline-success">Comment</button>
+                    <input type="text" name="comment" class="form-control addtxt" /><br/> 
+                    <button type="button" class="btn btn-outline-info btn-sm">Cancel</button>
+                    <button type="button" class="btn btn-outline-success btn-sm">Comment</button>
                 <%} else { %>
-                    <textarea class="form-control" name="comment" rows="2" readonly>로그인 후 댓글 작성이 가능합니다.</textarea><br/>
+                    <input type="text" name="comment" placeholder="로그인 후 댓글 작성이 가능합니다." class="form-control addtxt" readonly/><br/> 
                 <% } %>
+            </div>
+
+            <div class="container justify-content-center">
+                <div class="d-flex">
+                    <div class="second py-2 px-2"> 
+                        <div class="d-flex justify-content-between py-1 pt-2">
+                            <div>
+                                <img src="https://i.imgur.com/tPvlEdq.jpg" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+                                <span class="text2">Curtis</span>
+                            </div>
+                        </div>
+                        <span class="text1">Type your note, and hit enter to add it</span>
+                        <div>
+                            <button type="button" class="btn btn-outline-info btn-sm">Cancel</button>
+                            <button type="button" class="btn btn-outline-success btn-sm">Comment</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="second py-2 px-2"> 
+                        <div class="d-flex justify-content-between py-1 pt-2">
+                            <div>
+                                <img src="https://i.imgur.com/tPvlEdq.jpg" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+                                <span class="text2">Curtis</span>
+                            </div>
+                        </div>
+                        <span class="text1">Type your note, and hit enter to add it</span>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="second py-2 px-2"> 
+                        <div class="d-flex justify-content-between py-1 pt-2">
+                            <div>
+                                <img src="https://i.imgur.com/tPvlEdq.jpg" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+                                <span class="text2">Curtis</span>
+                            </div>
+                        </div>
+                        <span class="text1">Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it Type your note, and hit enter to add it</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
