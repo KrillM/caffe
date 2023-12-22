@@ -43,11 +43,16 @@
                     <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
-                        <button type="button" class="btn btn-outline-success btn-sm">Comment</button>
+                        <button type="button" class="btn btn-outline-success btn-sm" onclick="createCommentProcess()">Write</button>
+                        <form name="create-comment" action="/comment/create" method="post">
+                            <input type="hidden" name="crewId" value="<%= crew.crewId %>">
+                            <input type="hidden" name="reviewId" value="<%= review.reviewId %>">
+                        </form>
                     </div>
                 <%} else { %>
                     <input type="text" name="comment" placeholder="로그인 후 댓글 작성이 가능합니다." class="form-control addtxt" readonly/><br/> 
                 <% } %>
+                <div id="message" style="color: red;"></div>
             </div>
 
             <div class="container justify-content-center">
@@ -104,6 +109,21 @@
         function cleanComment(){
             var commentInput = document.getElementById('commentInput');
             commentInput.value = '';
+        }
+
+        const err = document.getElementById("message");
+
+        function createCommentProcess(){
+            var commentInput = document.getElementById('commentInput');
+            var commentValue = commentInput.value.trim();
+            
+            if (commentValue === '') {
+                return (err.innerHTML = "댓글은 빈칸으로 작성할 수 없습니다.");
+            }
+
+            if (commentValue.length > 255) {
+                return (err.innerHTML = "댓글은 255자 이상 작성할 수 없습니다.");
+            }
         }
     </script>
 </body>

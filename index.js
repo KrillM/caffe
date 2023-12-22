@@ -35,6 +35,9 @@ app.use("/myinfo", myinfo);
 const write = require("./routes/write");
 app.use("/write", write);
 
+const comment = require("./routes/comment");
+app.use("/comment", comment);
+
 app.get("*", (req, res) => {
     res.send("404 Error");
 });
