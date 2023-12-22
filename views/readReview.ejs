@@ -19,7 +19,7 @@
                 <% if(review.updatedAt.getTime() !== review.createdAt.getTime()) { %>
                     <span>Updated At <%= review.updatedAt.toLocaleString() %></span>
                 <% } else { %>
-                    <span>Created At at <%= review.createdAt.toLocaleString() %></span>
+                    <span>Created At <%= review.createdAt.toLocaleString() %></span>
                 <% } %>
             </p>
             <p class="nav justify-content-end">
