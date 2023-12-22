@@ -129,7 +129,7 @@
                 url: '/write/delete/<%= review.reviewId %>'
             }).then((res) => {
                 alert("글이 삭제되었습니다.");
-                location.href = "/";
+                location.href = "/crewpage/<%= crew.nickname %>";
             }).catch((err) => {
                 alert("글 삭제가 불가능합니다.");
             })
