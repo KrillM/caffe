@@ -15,13 +15,28 @@ exports.createComment = (req, res) => {
     });
 }
 
+exports.updateComment = async (req, res) => {
+    const { comment } = req.body;
+
+    try{
+        await Comment.update({
+            comment
+        }, {
+            where: {commentId: req.params.commentId}
+        })
+        res.send("ok");
+    } catch (error) {
+        console.error("updateComment 중 오류 발생:", error);
+        res.status(500).send("수정 오류가 발생하였습니다.");
+    }
+}
+
 exports.deleteComment = (req, res) => {
     Comment.destroy({
         where: {
             commentId: req.params.commentId
         }
     }).then(function(result){
-        console.log("destroied? ", result);
         res.send({result: true})
         res.render("readReview");
     }).catch(function(err){

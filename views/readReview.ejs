@@ -37,23 +37,6 @@
             </div>
             <hr/>
             <p class="lead"><%- review.content %></p>
-            <div class="form-group">
-                <label for="comment">Comment</label>
-                <% if(isLoggedIn && crew) { %>
-                    <form name="create-comment" action="/comment/create" method="post">
-                        <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
-                        <div id="message" style="color: red;"></div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
-                            <button type="button" class="btn btn-outline-success btn-sm" onclick="createCommentProcess()">Write</button>
-                            <input type="hidden" name="writtenBy" value="<%= crew.crewId %>">
-                            <input type="hidden" name="writtenAt" value="<%= review.reviewId %>">
-                        </div>
-                    </form>
-                <%} else { %>
-                    <input type="text" name="comment" placeholder="로그인 후 댓글 작성이 가능합니다." class="form-control addtxt" readonly/><br/> 
-                <% } %>
-            </div>
 
             <div class="container">
                 <% for(let i=0; i < comment.length; i++) { %>
@@ -76,15 +59,46 @@
                                     <span><%= comment[i].createdAt.toLocaleString() %>에 작성</span>
                                 <% } %>
                             </div>
-                            <span class="text1"><%= comment[i].comment %></span>
-                            <div class="d-flex gap-2 justify-content-end">
-                                <% if(isLoggedIn && crew && crew.crewId === comment[i].writtenBy) { %>
-                                    <button type="button" class="btn btn-outline-info btn-sm">Update</button>
+
+                            <div id="commentDisplay_<%= comment[i].commentId %>">
+                                <span class="text1"><%= comment[i].comment %></span>
+                            </div>
+
+                            <div id="commentInput_<%= comment[i].commentId %>" style="display: none;">
+                                <input type="text" name="comment" class="form-control addtxt" value="<%= comment[i].comment %>" id="newComment_<%= comment[i].commentId %>" /><br/>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="updateCancel('<%= comment[i].commentId %>')">Cancel</button>
+                                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="updateCommentProcess('<%= comment[i].commentId %>')">Update</button>
                                     <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteCommentProcess('<%= comment[i].commentId %>')">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 justify-content-end" id="gap_<%= comment[i].commentId %>">
+                                <% if(isLoggedIn && crew && crew.crewId === comment[i].writtenBy) { %>
+                                    <div id="message2" style="color: red;"></div>
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="toggleCommentEdit('<%= comment[i].commentId %>')">Update</button>
                                 <% } %>
                             </div>
                         </div>
                     </div>
+                <% } %>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <% if(isLoggedIn && crew) { %>
+                    <form name="create-comment" action="/comment/create" method="post">
+                        <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
+                        <div id="message" style="color: red;"></div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="createCommentProcess()">Write</button>
+                            <input type="hidden" name="writtenBy" value="<%= crew.crewId %>">
+                            <input type="hidden" name="writtenAt" value="<%= review.reviewId %>">
+                        </div>
+                    </form>
+                <%} else { %>
+                    <input type="text" name="comment" placeholder="로그인 후 댓글 작성이 가능합니다." class="form-control addtxt" readonly/><br/> 
                 <% } %>
             </div>
         </div>
@@ -146,8 +160,49 @@
             }).then((res) => {
                 location.reload();
             }).catch((err) => {
-                alert("댓글을 작성할 수 없습니다.")
+                err.innerHTML = "댓글을 작성할 수 없습니다.";
             })
+        }
+
+        function toggleCommentEdit(commentId) {
+            document.getElementById(`commentDisplay_${commentId}`).style.display = 'none';
+            document.getElementById(`commentInput_${commentId}`).style.display = 'block';
+        }
+
+        function updateCancel(commentId){
+            document.getElementById(`commentInput_${commentId}`).style.display = 'none';
+            document.getElementById(`commentDisplay_${commentId}`).style.display = 'block';
+            location.reload();
+        }
+
+        const err2 = document.getElementById("message2");
+
+        const updateCommentProcess = async (commentId) => {
+            const updatedComment = document.getElementById(`newComment_${commentId}`).value;
+            const comment = updatedComment.trim();
+
+            if (comment === '') {
+                return (err2.innerHTML = "댓글은 빈칸으로 수정할 수 없습니다.");
+            }
+
+            if (comment.length > 255) {
+                return (err2.innerHTML = "댓글은 255자 이상 수정할 수 없습니다.");
+            }
+
+            const data = { comment }
+
+            try {
+                const response = await axios.patch(`/comment/update/${commentId}`, data);
+
+                if(response.data == "ok"){
+                    location.reload();
+                }
+            } catch (error) {
+                err2.innerHTML = "댓글을 수정할 수 없습니다.";
+                setTimeout(() => {
+                    err.innerHTML = '';
+                }, 2000);
+            }
         }
 
         function deleteCommentProcess(commentId){
@@ -158,7 +213,7 @@
                 alert("댓글을 삭제했습니다.");
                 document.location.href=`/review/<%= review.reviewId %>`;
             }).catch((err) => {
-                alert("댓글을 삭제할 수 없습니다.");
+                err2.innerHTML = "댓글을 삭제할 수 없습니다.";
             })
         }
     </script>
