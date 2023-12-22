@@ -40,41 +40,47 @@
             <div class="form-group">
                 <label for="comment">Comment</label>
                 <% if(isLoggedIn && crew) { %>
-                    <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
-                        <button type="button" class="btn btn-outline-success btn-sm" onclick="createCommentProcess()">Write</button>
-                        <form name="create-comment" action="/comment/create" method="post">
-                            <input type="hidden" name="crewId" value="<%= crew.crewId %>">
-                            <input type="hidden" name="reviewId" value="<%= review.reviewId %>">
-                        </form>
-                    </div>
+                    <form name="create-comment" action="/comment/create" method="post">
+                        <input type="text" name="comment" class="form-control addtxt" id="commentInput" /><br/>
+                        <div id="message" style="color: red;"></div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-info btn-sm" onclick="cleanComment()">Cancel</button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="createCommentProcess()">Write</button>
+                            <input type="hidden" name="writtenBy" value="<%= crew.crewId %>">
+                            <input type="hidden" name="writtenAt" value="<%= review.reviewId %>">
+                        </div>
+                    </form>
                 <%} else { %>
                     <input type="text" name="comment" placeholder="로그인 후 댓글 작성이 가능합니다." class="form-control addtxt" readonly/><br/> 
                 <% } %>
-                <div id="message" style="color: red;"></div>
             </div>
 
-            <div class="container justify-content-center">
-                <% for(let i=0; i < comment.length ; i++) { %>
-                    <div class="d-flex">
-                        <div class="second py-2 px-2"> 
+            <div class="container">
+                <% for(let i=0; i < comment.length; i++) { %>
+                    <div class="d-flex flex-column">
+                        <div class="second py-2 px-2">
                             <div class="d-flex justify-content-between py-1 pt-2">
                                 <div>
-                                    <% if( comment.crew.profileImage !== null ) { %>
-                                        <img src="../files/<%= comment.crew.profileImage %>" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
-                                    <% } else {%>
-                                        <svg data-jdenticon-value="<%= comment.crew.nickname %>" width="30" height="30"></svg>
+                                    <% if(comment[i].crew.profileImage !== null) { %>
+                                        <img src="../files/<%= comment[i].crew.profileImage %>" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+                                    <% } else { %>
+                                        <svg data-jdenticon-value="<%= comment[i].crew.nickname %>" width="30" height="30"></svg>
                                     <% } %>
-                                    <span class="text2"><%= comment.crew.nickname %></span>
+                                    <span class="text2"><%= comment[i].crew.nickname %></span>
                                 </div>
                             </div>
-                            <span class="text1"><%= comment.comment %></span>
-                            <div>
-                                <% if(isLoggedIn && crew && crew.crewId === comment.writtenBy) { %>
+                            <div class="d-flex justify-content-end">
+                                <% if(comment[i].updatedAt.getTime() !== comment[i].createdAt.getTime()) { %>
+                                    <span><%= comment[i].updatedAt.toLocaleString() %>에 수정</span>
+                                <% } else { %>
+                                    <span><%= comment[i].createdAt.toLocaleString() %>에 작성</span>
+                                <% } %>
+                            </div>
+                            <span class="text1"><%= comment[i].comment %></span>
+                            <div class="d-flex gap-2 justify-content-end">
+                                <% if(isLoggedIn && crew && crew.crewId === comment[i].writtenBy) { %>
                                     <button type="button" class="btn btn-outline-info btn-sm">Update</button>
                                     <button type="button" class="btn btn-outline-danger btn-sm">Delete</button>
-                                <% } else { %>
                                 <% } %>
                             </div>
                         </div>
@@ -116,7 +122,7 @@
         function createCommentProcess(){
             var commentInput = document.getElementById('commentInput');
             var commentValue = commentInput.value.trim();
-            
+
             if (commentValue === '') {
                 return (err.innerHTML = "댓글은 빈칸으로 작성할 수 없습니다.");
             }
@@ -124,6 +130,24 @@
             if (commentValue.length > 255) {
                 return (err.innerHTML = "댓글은 255자 이상 작성할 수 없습니다.");
             }
+
+            const form = document.forms["create-comment"];
+
+            const data = {
+                comment: form.comment.value,
+                writtenBy: form.writtenBy.value,
+                writtenAt: form.writtenAt.value
+            };
+
+            axios({
+                method: "post",
+                url: `/comment/create`,
+                data: data
+            }).then((res) => {
+                location.reload();
+            }).catch((err) => {
+                alert("댓글을 작성할 수 없습니다.")
+            })
         }
     </script>
 </body>
