@@ -1,4 +1,4 @@
-const { Crew, Review } = require("../model");
+const { Crew, Review, Comment } = require("../model");
 
 exports.crewPage = async (req, res) => {
     try {
@@ -43,6 +43,11 @@ exports.readReviewPage = async (req, res) => {
             include: [{ model: Crew, attributes: ["nickname"] }]
         });
 
+        const reacts = await Comment.findAll({
+            where: { writtenAt: reviewId },
+            include: [{ model: Crew, attributes: ["nickname", "profileImage"] }]
+        });
+
         if (req.session.user) {
             const result = await Crew.findOne({
                 where: {
@@ -51,14 +56,14 @@ exports.readReviewPage = async (req, res) => {
             });
 
             if (result) {
-                res.render("readReview", { crew: result, review: reviews });
+                res.render("readReview", { crew: result, review: reviews, comment: reacts });
             } else {
                 req.session.destroy((err) => {
-                    res.render("readReview", { crew: null, review: reviews });
+                    res.render("readReview", { crew: null, review: reviews, comment: reacts });
                 });
             }
         } else {
-            res.render("readReview", { crew: null, review: reviews });
+            res.render("readReview", { crew: null, review: reviews, comment: reacts });
         }
     } catch (err) {
         console.log(err);

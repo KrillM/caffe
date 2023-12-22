@@ -22,8 +22,10 @@
         <div class="form-group">
             <div id="message" name="content" style="color: red;"></div>
         </div><br/>
-        <button type="button" class="btn btn-info" onClick="updateCancel()">Cancel</button>
-        <button type="button" class="btn btn-success" onClick="createReview()">Submit</button>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-info" onClick="updateCancel()">Cancel</button>
+            <button type="button" class="btn btn-success" onClick="createReview()">Submit</button>
+        </div>
     </form>
 
     <%- include('fragments/footer') %>

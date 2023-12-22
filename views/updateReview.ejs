@@ -12,7 +12,9 @@
         <div class="form-group">
             <label for="representImage">대표 이미지</label>
             <input type="file" name="representImage" class="form-control" id="representImage"><br/>
-            <button type="button" class="btn btn-warning" onClick="updateImg()">Change Image</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-warning" onClick="updateImg()">Change Image</button>
+            </div>
         </div>
         <div class="form-group">
             <div id="message3" name="content" style="color: red;"></div>
@@ -29,10 +31,12 @@
         <div class="form-group">
             <div id="message" name="content" style="color: red;"></div>
         </div><br/>
-        <button type="button" class="btn btn-warning" onClick="updateReview()">Update Review</button>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-warning" onClick="updateReview()">Update Review</button>
+        </div>
     </form>
 
-    <div class="crewForm" name="cancelOrDelete">
+    <div class="crewForm d-grid gap-2 d-md-flex justify-content-md-end" name="cancelOrDelete">
         <button type="button" class="btn btn-info" onClick="updateCancel()">Cancel</button>
         <button type="button" class="btn btn-danger" onClick="deleteReview()">Delete</button>
     </div>
