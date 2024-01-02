@@ -46,6 +46,9 @@
         </div>
     </div>
 
-    <%- include('fragments/devices') %>
-    <%- include('fragments/footerJs') %>
+    <h3>작성한 글</h3>
+    <%- include('fragments/devices', { review: userWrittenReviews }) %>
+
+    <h3>좋아요 누른 글</h3>
+    <%- include('fragments/devices', { review: likedReviews }) %>
 </body>

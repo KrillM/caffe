@@ -13,17 +13,36 @@ exports.crewPage = async (req, res) => {
         });
 
         if (result) {
-            const results = await Review.findAll({
-                where: {writtenBy: result.crewId},
+            // 사용자가 작성한 글 가져오기
+            const userWrittenReviews = await Review.findAll({
+                where: {
+                    writtenBy: result.crewId
+                },
                 include: [{ model: Crew, attributes: ["nickname"] }],
-            })
+            });
+
+            // 사용자가 좋아요를 누른 글의 ID 가져오기
+            const likedReviewIds = await LikeTable.findAll({
+                where: {
+                    crewId: result.crewId
+                },
+                attributes: ["reviewId"]
+            });
+
+            // 가져온 리뷰 ID를 사용하여 Review 모델에서 해당 리뷰 정보 가져오기
+            const likedReviews = await Review.findAll({
+                where: {
+                    reviewId: likedReviewIds.map(like => like.reviewId)
+                },
+                include: [{ model: Crew, attributes: ["nickname"] }],
+            });
 
             // 현재 로그인한 사용자와 조회된 사용자가 동일한 경우, 현재 사용자의 프로필을 보여줍니다.
             if (currentUser && currentUser.id === result.id) {
-                res.render("crewPage", { crew: result, review: results });
+                res.render("crewPage", { crew: result, userWrittenReviews, likedReviews });
             } else {
                 // 다른 사용자의 프로필을 보여줍니다.
-                res.render("crewPage", { crew: result, review: results });
+                res.render("crewPage", { crew: result, userWrittenReviews, likedReviews });
             }
         } else {
             res.status(404).send("존재하지 않는 사용자입니다.");
