@@ -14,5 +14,6 @@ router.delete("/logout", login.logoutProcess);
 
 router.get("/crewpage/:nickname", page.crewPage);
 router.get("/review/:reviewId", page.readReviewPage);
+router.post("/review/like/:reviewId/:crewId", page.toggleLike);
 
 module.exports=router;

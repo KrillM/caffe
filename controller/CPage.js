@@ -1,4 +1,4 @@
-const { Crew, Review, Comment } = require("../model");
+const { Crew, Review, Comment, LikeTable } = require("../model");
 
 exports.crewPage = async (req, res) => {
     try {
@@ -70,3 +70,41 @@ exports.readReviewPage = async (req, res) => {
         res.status(500).send("접근 오류 발생");
     }
 }
+
+exports.toggleLike = async (req, res) => {
+    try {
+        const reviewId = req.params.reviewId;
+        const crewId = req.params.crewId;
+    
+        // 해당 리뷰에 대한 좋아요 정보 확인
+        const like = await LikeTable.findOne({
+            where: {
+                reviewId: reviewId,
+                crewId: crewId
+            }
+        });
+  
+        if (like) {
+            // 좋아요 정보가 있으면 좋아요 취소
+            await like.destroy();
+        } else {
+            // 좋아요 정보가 없으면 좋아요 추가
+            await LikeTable.create({
+                crewId: crewId,
+                reviewId: reviewId
+            });
+        }
+    
+        // 리뷰의 좋아요 수 업데이트
+        const likeCount = await LikeTable.count({ where: { reviewId: reviewId } });
+        await Review.update({ likeNum: likeCount }, { where: { reviewId: reviewId } });
+    
+        res.json({
+            success: true,
+            likeNum: likeCount
+        });
+    } catch (error) {
+        console.error('좋아요 토글 에러:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
